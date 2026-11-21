@@ -19,3 +19,6 @@ Static website (HTML + ES modules, no build step, no Node.js) on Supabase. Run w
 - Build lesson links with `lessonHref()` from `js/business/lessonService.js`.
 - Unfinished pages: give the link the `soon` class (shows a "Coming soon" toast).
 - Draft content in SQL is marked `-- DRAFT` until a coach reviews it.
+- SQL files are plain ASCII (the Supabase editor paste broke on curly quotes): `''` for apostrophes,
+  `E'...'` escape codes for symbols like the middle dot. Content upserts use `on conflict ... do update`.
+- Card text may use `**bold**`; render it with `richText()` from `components/ui.js` (escapes first).
