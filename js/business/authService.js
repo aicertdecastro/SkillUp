@@ -14,6 +14,13 @@ export function friendlyError(err) {
   if (/failed to fetch|network/i.test(msg)) return 'Can’t reach SkillUp. Check your internet connection.';
   if (/duplicate key|23505|saving new user/i.test(msg) || err?.code === '23505') return 'That username is taken. Pick another one.';
   if (/not logged in|jwt/i.test(msg)) return 'Your login expired. Please log in again.';
+  // lessons + sport final (messages raised in supabase/003_learn_quiz.sql)
+  if (/finish all 5 lessons first/i.test(msg)) return 'Finish all 5 lessons to unlock the Sport Final.';
+  if (/read every card first/i.test(msg)) return 'Tick every key point card first.';
+  if (/already answered/i.test(msg)) return 'You already answered that one.';
+  if (/answer every question first/i.test(msg)) return 'Answer every question first.';
+  if (/no quiz for this sport/i.test(msg)) return 'This Sport Final isn’t ready yet. Check back soon!';
+  if (/lesson not found|quiz not found|not finished yet/i.test(msg)) return 'We couldn’t find that. Head back to the dashboard.';
   return 'Something went wrong. Please try again.';
 }
 

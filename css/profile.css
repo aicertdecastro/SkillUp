@@ -2,11 +2,6 @@
 
 /* ---------- top bar: 90 px + 4 px divider ---------- */
 .prof .topbar { height: 94px; padding: 0 26px 0 27px; }
-.back {
-  width: 46px; height: 46px; display: grid; place-items: center; flex: none;
-  background: var(--blue); border: 3px solid var(--navy); border-radius: 12px; box-shadow: 0 4px 0 var(--navy);
-}
-.back svg { width: 20px; height: 20px; }
 .prof .wordmark { margin-left: 16px; }
 .page-pill { margin-left: 20px; height: 34px; padding: 0 16px; display: flex; align-items: center; background: var(--navy); color: var(--white); border-radius: 17px; font-size: 15px; font-weight: 800; }
 .top-actions { margin-left: auto; display: flex; gap: 11px; }
@@ -94,6 +89,8 @@
 .lessons { list-style: none; margin: 19px 0 0; padding: 0; display: grid; gap: 14px; }
 .lessons li { height: 60px; display: flex; align-items: center; gap: 14px; padding: 0 17px 0 14px; border: 3px solid; border-radius: 14px; font-size: 18px; font-weight: 600; }
 .lessons img { width: 34px; height: 34px; flex: none; }
+.lesson-link { color: inherit; text-decoration: none; }
+.lesson-link:hover { text-decoration: underline; }
 .lessons small { margin-left: auto; font-size: 13px; font-weight: 900; letter-spacing: 1px; }
 .lessons .complete { background: var(--green-soft); border-color: var(--green); }
 .lessons .up_next, .lessons .in_progress { background: var(--yellow-soft); border-color: var(--navy); }

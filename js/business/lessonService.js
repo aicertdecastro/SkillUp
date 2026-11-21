@@ -1,0 +1,103 @@
+// BUSINESS LAYER · turns get_lesson() data into what the lesson page shows.
+import * as repo from '../data/lessonRepository.js';
+import { LESSON_MINUTES } from '../data/sportInfo.js';
+import { SPORT_IDS, STEPS, WAYS_TO_EARN, ACTIVITY_LABEL, COACH_TIPS } from '../data/lessonUi.js';
+
+const STATUS_LABEL = { complete: 'Done', up_next: 'Up next', in_progress: 'In progress', not_started: 'Not started' };
+
+// The one place lesson links are built (dashboard, profile, results all use it).
+// No lesson number → the server opens the lesson to continue in that sport.
+export function lessonHref(sportId, lessonNo) {
+  if (!sportId) return 'lesson.html';
+  return lessonNo ? `lesson.html?sport=${sportId}&lesson=${lessonNo}` : `lesson.html?sport=${sportId}`;
+}
+
+export const finalHref = (sportId) => `final.html?sport=${sportId}`;
+
+// ?sport=basketball&lesson=4 → { sportId, lessonNo }. Anything unknown becomes null,
+// and the server then picks the lesson to continue.
+export function readLessonParams(search) {
+  const p = new URLSearchParams(search);
+  const sportId = SPORT_IDS.includes(p.get('sport')) ? p.get('sport') : null;
+  const n = Number(p.get('lesson'));
+  const lessonNo = sportId && Number.isInteger(n) && n >= 1 && n <= 5 ? n : null;
+  return { sportId, lessonNo };
+}
+
+function videoLength(seconds) {
+  if (!seconds) return 'add yours';
+  return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
+}
+
+const pct = (part, whole) => (whole ? Math.round((100 * part) / whole) : 0);
+
+function activity(l) {
+  return ACTIVITY_LABEL[l.challenge_type ?? 'none'] ?? l.challenge_title ?? '';
+}
+
+function shape(d) {
+  const sport = d.sport;
+  const lesson = d.lesson;
+  const done = d.progress.cards_done ?? [];
+  const totalMinutes = LESSON_MINUTES.slice(0, d.lessons_total).reduce((a, b) => a + b, 0);
+
+  return {
+    sportId: sport.id,
+    sportName: sport.name,
+    lessonId: lesson.id,
+    lessonNo: lesson.lesson_no,
+    title: lesson.title,
+    goal: lesson.goal,
+    eyebrow: `${sport.name} · Lesson ${lesson.lesson_no} of ${d.lessons_total}`,
+    href: lessonHref(sport.id, lesson.lesson_no),
+    steps: STEPS.map((s, i) => ({ ...s, n: i + 1, current: s.id === 'learn' })),
+    video: {
+      url: lesson.video_url,
+      captions: lesson.captions_url,
+      badge: `Video lesson ${lesson.lesson_no}`,
+      length: `Video length: ${videoLength(lesson.video_seconds)}`,
+    },
+    cards: d.cards.map((c) => ({
+      no: c.card_no, label: c.label, heading: c.heading, body: c.body, icon: c.icon,
+      done: done.includes(c.card_no),
+    })),
+    sidebar: {
+      heading: `${sport.name} lessons`,
+      sub: `${d.lessons_total} short lessons · about ${totalMinutes} minutes`,
+      lessons: d.lessons.map((l) => ({
+        no: l.lesson_no,
+        title: l.title,
+        status: l.status,
+        current: l.lesson_no === lesson.lesson_no,
+        sub: `${STATUS_LABEL[l.status]} · ${activity(l)}`,
+        href: lessonHref(sport.id, l.lesson_no),
+      })),
+      final: { label: `${sport.name} Sport Final`, unlocked: d.final_unlocked, href: finalHref(sport.id) },
+      lessonsText: `${d.lessons_done} / ${d.lessons_total}`,
+      lessonsPct: pct(d.lessons_done, d.lessons_total),
+      levelsText: `${d.levels_passed} / ${d.levels_total}`,
+      levelsPct: pct(d.levels_passed, d.levels_total),
+      earn: WAYS_TO_EARN,
+      coach: COACH_TIPS.learn,
+    },
+    pointsChip: `+${d.points_this_lesson} this lesson`,
+    otherSports: SPORT_IDS.map((id) => ({ id, current: id === sport.id, href: lessonHref(id) })),
+  };
+}
+
+export async function loadLesson({ sportId, lessonNo }) {
+  return shape(await repo.getLesson(sportId, lessonNo));
+}
+
+export const cardsCounter = (cards) => `${cards.filter((c) => c.done).length} / ${cards.length}`;
+export const allCardsDone = (cards) => cards.every((c) => c.done);
+
+// Returns the ticked card numbers from the server (the source of truth).
+export async function tickCard(lessonId, cardNo) {
+  return repo.tickCard(lessonId, cardNo);
+}
+
+// "Next: Try it" — the server refuses unless every card is ticked.
+export async function goToTryIt(lessonId) {
+  await repo.saveStep(lessonId, 'try');
+}

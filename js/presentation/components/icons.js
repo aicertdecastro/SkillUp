@@ -41,3 +41,33 @@ export const icons = {
 };
 
 export const sportIcon = (id, fill) => icons[id] ? icons[id](fill) : '';
+
+// Pictures on the lesson key-point cards (lesson_cards.icon in the database).
+const O = '#ff7a1a', B = '#2f6fe0', Y = '#ffc93c', G = '#36c26b';
+const cardArt = {
+  ball: () => `<circle cx="50" cy="50" r="30" fill="${O}" ${S}/><path d="M50 20v60M20 50h60" fill="none" ${S}/>`,
+  hand: () => `<circle cx="50" cy="68" r="18" fill="${O}" ${S}/><path d="M30 40V20M40 36V12M50 36V14M60 40V20M28 44c0-6 44-6 44 0" fill="none" ${S}/>`,
+  pass: () => `<circle cx="26" cy="30" r="9" fill="${B}" ${S}/><circle cx="74" cy="30" r="9" fill="${B}" ${S}/>
+    <path d="M14 56c0-10 24-10 24 0M62 56c0-10 24-10 24 0" fill="none" ${S}/><circle cx="30" cy="76" r="8" fill="${O}" ${S}/><path d="M40 76h36m-8-8 8 8-8 8" fill="none" ${S}/>`,
+  target: () => `<circle cx="50" cy="50" r="36" fill="${O}" ${S}/><circle cx="50" cy="50" r="23" fill="#fff" ${S}/><circle cx="50" cy="50" r="10" fill="${O}" ${S}/>`,
+  team: () => `<circle cx="32" cy="36" r="11" fill="${B}" ${S}/><circle cx="68" cy="36" r="11" fill="${O}" ${S}/>
+    <path d="M14 76c0-16 36-16 36 0M50 76c0-16 36-16 36 0" fill="none" ${S}/>`,
+  hoop: () => `<path d="M24 14h52v30H24z" fill="#fff" ${S}/><path d="M38 34h24v10H38z" fill="none" ${S}/><path d="M32 50h36l-6 30H38z" fill="${O}" ${S}/><path d="M42 50l4 30M58 50l-4 30" fill="none" ${S}/>`,
+  court: () => `<rect x="12" y="22" width="76" height="56" rx="6" fill="${G}" ${S}/><path d="M50 22v56" fill="none" ${S}/><circle cx="50" cy="50" r="11" fill="none" ${S}/>`,
+  timer: () => `<circle cx="50" cy="56" r="32" fill="${Y}" ${S}/><path d="M50 56V38M50 56l12 8M42 14h16M50 14v10" fill="none" ${S}/>`,
+  whistle: () => `<path d="M18 46h44a18 18 0 1 1-18 18H18z" fill="${Y}" ${S}/><circle cx="62" cy="64" r="6" fill="#fff" ${S}/><path d="M26 46V34h18v12M70 30l10-8M76 42l10-2" fill="none" ${S}/>`,
+  brain: () => `<path d="M50 18c-18 0-30 12-30 28 0 10 6 16 10 20v14h40V66c4-4 10-10 10-20 0-16-12-28-30-28z" fill="${Y}" ${S}/><path d="M42 80h16M44 48l6 6 10-12" fill="none" ${S}/>`,
+  star: () => `<path d="M50 12l11 23 25 3-18 17 5 25-23-12-23 12 5-25-18-17 25-3z" fill="${Y}" ${S}/>`,
+  goal: () => `<path d="M14 80V26h72v54" fill="#fff" ${S}/><path d="M14 40h72M14 54h72M14 68h72M32 26v54M50 26v54M68 26v54" fill="none" stroke="#1b2a4a" stroke-width="2"/><circle cx="50" cy="74" r="9" fill="${O}" ${S}/>`,
+};
+export const cardIcon = (key) =>
+  `<svg viewBox="0 0 100 100" aria-hidden="true">${(cardArt[key] ?? cardArt.ball)()}</svg>`;
+
+export const uiIcons = {
+  lock: () => `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2" fill="#fff" stroke="#1b2a4a" stroke-width="2.4"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="#1b2a4a" stroke-width="2.4"/></svg>`,
+  sound: (on = true) => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="#1b2a4a"/>${on
+    ? '<path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11" fill="none" stroke="#1b2a4a" stroke-width="2.2" stroke-linecap="round"/>'
+    : '<path d="M16 9l5 6M21 9l-5 6" fill="none" stroke="#1b2a4a" stroke-width="2.2" stroke-linecap="round"/>'}</svg>`,
+  tick: () => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  smile: () => `<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="42" fill="${G}" ${S}/><path d="M24 34c8-12 44-12 52 0" fill="#1b2a4a" ${S}/><circle cx="38" cy="50" r="4" fill="#1b2a4a"/><circle cx="62" cy="50" r="4" fill="#1b2a4a"/><path d="M36 64c8 8 20 8 28 0" fill="none" ${S}/></svg>`,
+};

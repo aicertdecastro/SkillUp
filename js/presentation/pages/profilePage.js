@@ -65,7 +65,7 @@ function render() {
             <h2>${esc(c.title)}</h2>
             <p class="next">${esc(c.nextStep)}</p>
           </div>
-          <a class="btn btn--yellow soon" href="${c.href}">RESUME</a>
+          <a class="btn btn--yellow" href="${c.href}">RESUME</a>
         </section>` : `
         <section class="resume"><div><h2>Every lesson done. Amazing!</h2><p class="next">Replay challenges to upgrade your badges.</p></div></section>`}
 
@@ -99,7 +99,7 @@ function render() {
           </div>
           <ol class="lessons" role="tabpanel">
             ${data.tracker[tab].lessons.map((l) => `
-              <li class="${l.status}"><img src="assets/img/${STATUS_IMG[l.status]}.png" alt=""><span>${esc(l.label)}</span><small>${esc(l.statusLabel)}</small></li>`).join('')}
+              <li class="${l.status}"><img src="assets/img/${STATUS_IMG[l.status]}.png" alt=""><a class="lesson-link" href="${l.href}">${esc(l.label)}</a><small>${esc(l.statusLabel)}</small></li>`).join('')}
           </ol>
         </section>
       </div>

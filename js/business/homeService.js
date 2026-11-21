@@ -2,6 +2,7 @@
 import * as homeRepo from '../data/homeRepository.js';
 import { SPORT_INFO, LESSON_MINUTES } from '../data/sportInfo.js';
 import { USERNAME_RE } from './authService.js';
+import { lessonHref } from './lessonService.js';
 
 const STEP_LABEL = { learn: 'Learn', try: 'Try it', check: 'Quick check', play: 'Play' };
 const STATUS_LABEL = { complete: 'Complete', up_next: 'Up next', in_progress: 'In progress', not_started: 'Not started' };
@@ -16,10 +17,6 @@ export function initials(name) {
   const parts = name.trim().split(/\s+/);
   const letters = parts.length > 1 ? parts[0][0] + parts[1][0] : parts[0].slice(0, 2);
   return letters.toUpperCase();
-}
-
-function lessonHref(sportId, lessonNo) {
-  return `lesson.html?sport=${sportId}&lesson=${lessonNo}`;
 }
 
 function shapeContinue(c) {
@@ -106,6 +103,7 @@ export async function getProfile() {
       id: s.id,
       tabLabel: `${s.name} · ${s.lessons_done}/${s.lessons_total}`,
       lessons: s.lessons.map((l) => ({
+        href: lessonHref(s.id, l.lesson_no),
         label: `${l.lesson_no}. ${l.title}`,
         status: l.status,
         statusLabel: STATUS_LABEL[l.status],

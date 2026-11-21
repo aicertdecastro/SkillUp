@@ -90,6 +90,11 @@ img { display: block; }
 .topbar { display: flex; align-items: center; border-bottom: 4px solid var(--divider); }
 .wordmark { font-family: var(--font-head); font-size: 34px; line-height: 1; color: var(--blue); text-decoration: none; letter-spacing: .5px; }
 .wordmark span { color: var(--orange); }
+.back {
+  width: 46px; height: 46px; display: grid; place-items: center; flex: none;
+  background: var(--blue); border: 3px solid var(--navy); border-radius: 12px; box-shadow: 0 4px 0 var(--navy);
+}
+.back svg { width: 20px; height: 20px; }
 .avatar {
   display: grid; place-items: center; flex: none; border-radius: 50%;
   background: var(--green); border: 3px solid var(--navy); color: var(--navy);

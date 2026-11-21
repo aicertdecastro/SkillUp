@@ -35,7 +35,7 @@ function renderStats() {
     <span class="chip" title="Points"><img src="assets/img/icon-coin.png" alt="">${esc(data.points)}</span>
     <span class="chip" title="Day streak"><img src="assets/img/icon-flame.png" alt="">${esc(data.streak)}</span>
     <a class="chip" href="profile.html" title="Badges"><img src="assets/img/icon-trophy.png" alt="">${esc(data.badges)}</a>
-    ${data.continue ? `<a class="chip chip--continue soon" href="${data.continue.href}">${icons.triangle()}<span>Continue: ${esc(data.continue.short)}</span></a>` : ''}
+    ${data.continue ? `<a class="chip chip--continue" href="${data.continue.href}">${icons.triangle()}<span>Continue: ${esc(data.continue.short)}</span></a>` : ''}
     <a class="avatar" href="profile.html" title="My profile">${esc(data.initials)}</a>`;
 }
 
@@ -89,7 +89,7 @@ function render() {
           </div>
           <div class="about-actions">
             ${mid.playHref
-              ? `<a class="btn btn--orange soon" href="${mid.playHref}">PLAY LESSON ${mid.nextLessonNo}</a>`
+              ? `<a class="btn btn--orange" href="${mid.playHref}">PLAY LESSON ${mid.nextLessonNo}</a>`
               : `<span class="btn btn--green">ALL DONE!</span>`}
             <a class="btn btn--blue soon" href="challenges.html?sport=${mid.id}">Challenges</a>
           </div>
