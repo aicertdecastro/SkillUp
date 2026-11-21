@@ -26,13 +26,15 @@ begin
   delete from public.lesson_progress    where user_id = u;
   delete from public.activity_days      where user_id = u;
 
-  -- Basketball 1–3 done, Lesson 4 started (step: Learn). Volleyball 1 done.
-  insert into public.lesson_progress (user_id, lesson_id, step, cards_read, completed_at, updated_at)
-  select u, l.id, 'play', l.card_count, now() - interval '3 days', now() - interval '3 days'
+  -- Basketball 1–3 done, Lesson 4 started (step: Learn, card 1 ticked). Volleyball 1 done.
+  -- (cards_done needs 003_learn_quiz.sql)
+  insert into public.lesson_progress (user_id, lesson_id, step, cards_read, cards_done, completed_at, updated_at)
+  select u, l.id, 'play', l.card_count, array(select generate_series(1, l.card_count)),
+         now() - interval '3 days', now() - interval '3 days'
     from public.lessons l
    where (l.sport_id = 'basketball' and l.lesson_no <= 3) or (l.sport_id = 'volleyball' and l.lesson_no = 1);
-  insert into public.lesson_progress (user_id, lesson_id, step, cards_read, updated_at)
-  select u, id, 'learn', 1, now() - interval '1 hour'
+  insert into public.lesson_progress (user_id, lesson_id, step, cards_read, cards_done, updated_at)
+  select u, id, 'learn', 1, '{1}', now() - interval '1 hour'
     from public.lessons where sport_id = 'basketball' and lesson_no = 4;
 
   -- Basketball: positions L1+L2 and rules L1+L2 passed (4/8). Volleyball: timing L1.
