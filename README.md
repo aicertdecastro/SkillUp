@@ -17,8 +17,10 @@ Login, sign-up, dashboard, learner profile, and **Learn, quiz + review** (lesson
    3. `supabase/002_home.sql`
    4. `supabase/003_learn_quiz.sql`
    5. `supabase/003_content.sql` (lesson cards + finals; rows marked DRAFT need a coach's review)
+   6. `supabase/004_basketball_lessons.sql` (exact Basketball lesson 1–5 cards from the Figma screens)
 
-   Already ran 1–3 for "start + home"? Just run 4 and 5, then run `demo_jamie.sql` again.
+   Already ran the earlier files? Only run the new ones (e.g. just 6), then `demo_jamie.sql` again.
+   Run each file whole, with nothing highlighted in the SQL Editor.
 5. **Project Settings → API**: copy the **Project URL** and the **anon / publishable** key into `js/data/config.js`.
    Never use the service_role / secret key in the website.
 
@@ -40,9 +42,9 @@ Login, sign-up, dashboard, learner profile, and **Learn, quiz + review** (lesson
 Until then the lesson shows the "VIDEO GOES HERE" placeholder.
 
 ## 6. Trying the Sport Final
-The final unlocks after all 5 lessons of a sport are finished. The "Try it / Quick check / Play"
-steps are the next wireframes, so for now open `supabase/test_unlock_final.sql`, set the username
-and sport, and run it. **Test databases only.**
+The final unlocks after all 5 lessons of a sport are finished. A lesson is finished by ticking every
+key-point card and pressing the big footer button ("Next lesson: …" or "Play the challenge: …").
+Shortcut for testing: `supabase/test_unlock_final.sql` (set the username and sport). **Test databases only.**
 
 ## 7. Test checklist
 - [ ] New account → dashboard shows 0 points, 0/5 lessons, NEW! on every sport
@@ -59,14 +61,22 @@ and sport, and run it. **Test databases only.**
 
 Learn, quiz + review:
 - [ ] Jamie: dashboard **Continue** opens Basketball Lesson 4: sidebar Done/Done/Done/Up next/Not started, 3 / 5, 4 / 8, card 1 ticked, "1 / 3"
-- [ ] Tick cards 2 and 3 → refresh → still ticked; **Next: Try it** works only at 3 / 3
-- [ ] Dashboard Continue now says "Next step: Try it"
+- [ ] Tick cards 2 and 3 → refresh → still ticked
 - [ ] Basketball Sport Final button is locked (3/5); opening `final.html?sport=basketball` shows "Sport final locked"
 - [ ] After `test_unlock_final.sql` (volleyball): live "Correct so far", a wrong answer shows the right one + review link
 - [ ] Refresh in the middle of the quiz → carries on from the same question
 - [ ] 7/10 → Bronze, 9/10 → Silver; a retake only pays points for questions not answered right before
 - [ ] Results: Try again, Dashboard and Next buttons work; Celebration sound OFF is remembered
 - [ ] Profile tracker rows and Resume open the right lesson
+
+Basketball lessons 1–5:
+- [ ] Each lesson matches its Figma screen: card text, picture labels (5 v 5, 10 ft high, 1·2·3, Gear, PG, SG, SF, PF + C, Traveling, Double dribble, Foul, Out, Open, Keep moving, Shoot, Defense), counter 0 / 4 (Lesson 4: 0 / 3)
+- [ ] Sidebar says "Drag-and-drop court positions", "Clickable rule scenarios", "Choose your play cards"
+- [ ] Footer: Lesson 1 "Next lesson: Positions"; Lessons 2–5 "Play the challenge: …"; it only works once every card is ticked
+- [ ] Lesson 1 footer → +10 pts toast → opens Lesson 2; Lessons 2–5 → +10 pts, sidebar shows Done and progress goes up
+- [ ] Back on Lesson 3 → Lesson 2; Back on Lesson 1 → dashboard
+- [ ] Finishing a lesson again gives no extra points
+- [ ] Jamie: finish Lessons 4 and 5 → Basketball Sport Final unlocks; dashboard shows Basketball 5/5
 
 ## Folder map
 ```
@@ -76,7 +86,7 @@ js/presentation/         pages/ (one script per page), components/ (icons, ui he
 js/business/             authService.js, homeService.js, lessonService.js, quizService.js
 js/data/                 config.js, supabaseClient.js, *Repository.js, sportInfo.js, lessonUi.js
 supabase/                schema.sql, seed.sql, 002_home.sql, 003_learn_quiz.sql, 003_content.sql,
-                         demo_jamie.sql, test_unlock_final.sql (test only)
+                         004_basketball_lessons.sql, demo_jamie.sql, test_unlock_final.sql (test only)
 assets/img/               artwork cut from the Figma export
 CLAUDE.md                rules Claude Code follows in this project
 ```
