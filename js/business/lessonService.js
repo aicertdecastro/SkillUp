@@ -1,7 +1,7 @@
 // BUSINESS LAYER · turns get_lesson() data into what the lesson page shows.
 import * as repo from '../data/lessonRepository.js';
 import { LESSON_MINUTES } from '../data/sportInfo.js';
-import { SPORT_IDS, STEPS, WAYS_TO_EARN, ACTIVITY_LABEL, COACH_TIPS } from '../data/lessonUi.js';
+import { SPORT_IDS, STEPS, WAYS_TO_EARN, ACTIVITY_LABEL, ACTIVITY_LABEL_BY_SPORT, COACH_TIPS } from '../data/lessonUi.js';
 
 const STATUS_LABEL = { complete: 'Done', up_next: 'Up next', in_progress: 'In progress', not_started: 'Not started' };
 
@@ -31,8 +31,9 @@ function videoLength(seconds) {
 
 const pct = (part, whole) => (whole ? Math.round((100 * part) / whole) : 0);
 
-function activity(l) {
-  return ACTIVITY_LABEL[l.challenge_type ?? 'none'] ?? l.challenge_title ?? '';
+function activity(l, sportId) {
+  const type = l.challenge_type ?? 'none';
+  return ACTIVITY_LABEL_BY_SPORT[sportId]?.[type] ?? ACTIVITY_LABEL[type] ?? l.challenge_title ?? '';
 }
 
 // The big footer button. A lesson with a challenge sends you to it;
@@ -41,7 +42,7 @@ function footer(d) {
   const lesson = d.lesson;
   const me = d.lessons.find((l) => l.lesson_no === lesson.lesson_no);
   if (lesson.challenge_type) {
-    return { kind: 'challenge', label: `Play the challenge: ${activity(me)}` };
+    return { kind: 'challenge', label: `Play the challenge: ${activity(me, d.sport.id)}` };
   }
   const next = d.lessons.find((l) => l.lesson_no === lesson.lesson_no + 1);
   return next
@@ -86,7 +87,7 @@ function shape(d) {
         title: l.title,
         status: l.status,
         current: l.lesson_no === lesson.lesson_no,
-        sub: `${STATUS_LABEL[l.status]} · ${activity(l)}`,
+        sub: `${STATUS_LABEL[l.status]} · ${activity(l, sport.id)}`,
         href: lessonHref(sport.id, l.lesson_no),
       })),
       final: { label: `${sport.name} Sport Final`, unlocked: d.final_unlocked, href: finalHref(sport.id) },

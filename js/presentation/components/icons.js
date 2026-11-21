@@ -60,12 +60,31 @@ const cardArt = {
   star: () => `<path d="M50 12l11 23 25 3-18 17 5 25-23-12-23 12 5-25-18-17 25-3z" fill="${Y}" ${S}/>`,
   goal: () => `<path d="M14 80V26h72v54" fill="#fff" ${S}/><path d="M14 40h72M14 54h72M14 68h72M32 26v54M50 26v54M68 26v54" fill="none" stroke="#1b2a4a" stroke-width="2"/><circle cx="50" cy="74" r="9" fill="${O}" ${S}/>`,
   // Basketball lessons 1-5 (Figma)
-  players: () => `<circle cx="28" cy="34" r="10" fill="${B}" ${S}/><circle cx="72" cy="34" r="10" fill="${O}" ${S}/>
-    <path d="M12 70c0-14 32-14 32 0M56 70c0-14 32-14 32 0" fill="none" ${S}/>
-    <rect x="34" y="76" width="32" height="16" rx="4" fill="#fff" ${S} stroke-width="3"/>
-    <text x="50" y="88" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="11" fill="#1b2a4a">5 v 5</text>`,
-  score: () => `<rect x="10" y="26" width="80" height="48" rx="10" fill="${Y}" ${S}/>
-    <text x="50" y="60" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="22" fill="#1b2a4a">1·2·3</text>`,
+  // the label under the picture says "5 v 5" / "6 v 6", so the picture has no text
+  players: () => `<circle cx="22" cy="36" r="9" fill="${B}" ${S}/><circle cx="50" cy="30" r="10" fill="${O}" ${S}/><circle cx="78" cy="36" r="9" fill="${B}" ${S}/>
+    <path d="M8 74c0-14 28-14 28 0M34 70c0-16 32-16 32 0M64 74c0-14 28-14 28 0" fill="none" ${S}/>`,
+  score: () => textTile('1·2·3'),
+
+  // Volleyball lessons 1-5 (Figma)
+  net: () => `<path d="M10 40h80M10 40v44M90 40v44" fill="none" ${S}/><path d="M10 40h80v18H10z" fill="#fff" ${S} stroke-width="3"/>
+    <path d="M22 40v18M34 40v18M46 40v18M58 40v18M70 40v18M82 40v18" fill="none" stroke="#1b2a4a" stroke-width="2"/>
+    <circle cx="50" cy="20" r="11" fill="${Y}" ${S}/>`,
+  touches: () => `<circle cx="22" cy="50" r="13" fill="${Y}" ${S}/><circle cx="50" cy="50" r="13" fill="${Y}" ${S}/><circle cx="78" cy="50" r="13" fill="${Y}" ${S}/>`,
+  zones: () => `<rect x="12" y="20" width="76" height="60" rx="4" fill="${Y}" ${S}/>
+    <path d="M37 20v60M63 20v60M12 50h76" fill="none" ${S} stroke-width="4"/>`,
+  roles: () => `<path d="M50 14l38 68H12z" fill="${Y}" ${S}/><circle cx="50" cy="56" r="10" fill="#fff" ${S}/>`,
+  rotate: () => `<circle cx="50" cy="54" r="12" fill="${B}" ${S}/>
+    <path d="M22 40a30 30 0 0 1 52-12M78 64a30 30 0 0 1-52 12" fill="none" ${S}/><path d="M74 14v14H60M26 90V76h14" fill="none" ${S}/>`,
+  'foot-fault': () => `<path d="M10 66h80" fill="none" ${S}/><path d="M30 60c-2-14 6-26 14-26s10 10 6 18l-6 8z" fill="${B}" ${S}/>
+    <path d="M62 24l18 18M80 24L62 42" fill="none" stroke="#d93b3b" stroke-width="7" stroke-linecap="round"/>`,
+  'line-in': () => `<rect x="10" y="24" width="80" height="56" fill="${G}" ${S}/><path d="M50 24v56" fill="none" stroke="#fff" stroke-width="7"/>
+    <circle cx="50" cy="52" r="13" fill="${Y}" ${S}/>`,
+  bump: () => `<circle cx="50" cy="20" r="11" fill="${Y}" ${S}/><path d="M24 86l18-30M76 86L58 56M42 56h16" fill="none" ${S}/>
+    <path d="M30 56h40" fill="none" stroke="${B}" stroke-width="9" stroke-linecap="round"/>`,
+  set: () => `<circle cx="50" cy="18" r="11" fill="${Y}" ${S}/><path d="M50 34l26 44H24z" fill="#fff" ${S}/>`,
+  serve: () => `<circle cx="34" cy="58" r="13" fill="${Y}" ${S}/><path d="M60 86V44l16-20M60 56l-12 4" fill="none" ${S}/>
+    <path d="M80 18a14 14 0 0 1 4 18" fill="none" ${S} stroke-dasharray="4 6"/>`,
+  ready: () => `<circle cx="50" cy="20" r="10" fill="${B}" ${S}/><path d="M50 30v26M30 44l20 6 20-6M50 56l-16 14v16M50 56l16 14v16" fill="none" ${S}/>`,
   gear: () => `<circle cx="34" cy="38" r="20" fill="${O}" ${S}/><path d="M14 38h40M34 18v40" fill="none" ${S} stroke-width="3"/>
     <path d="M48 70c10 0 14-8 22-8h10c4 0 8 4 8 10v8H48z" fill="${B}" ${S}/>`,
   steps: () => `<path d="M16 80l14-12M38 62l14-12M60 44l14-12" fill="none" ${S}/>
@@ -95,8 +114,18 @@ function letterBadges(text) {
           font-size="${r * 0.85}" fill="#fff" stroke="#1b2a4a" stroke-width="1.5">${t.replace(/[<>&"]/g, '')}</text>`).join('');
 }
 
+// "tile:25", "tile:MINE!" → the text on a yellow tile, sized to fit.
+function textTile(text) {
+  const t = text.replace(/[<>&"]/g, '');
+  const size = Math.min(34, Math.floor(130 / Math.max(t.length, 1)));
+  return `<rect x="8" y="24" width="84" height="52" rx="10" fill="${Y}" ${S}/>
+    <text x="50" y="${50 + size * 0.36}" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="${size}" fill="#1b2a4a">${t}</text>`;
+}
+
 export function cardIcon(key = '') {
-  const art = key.startsWith('badge:') ? letterBadges(key.slice(6)) : (cardArt[key] ?? cardArt.ball)();
+  const art = key.startsWith('badge:') ? letterBadges(key.slice(6))
+    : key.startsWith('tile:') ? textTile(key.slice(5))
+    : (cardArt[key] ?? cardArt.ball)();
   return `<svg viewBox="0 0 100 100" aria-hidden="true">${art}</svg>`;
 }
 

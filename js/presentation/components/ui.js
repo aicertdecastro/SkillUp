@@ -7,6 +7,12 @@ export function esc(text) {
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 }
 
+// Escaped text where **like this** becomes bold. Escaping happens first, so content
+// from the database can never add its own HTML.
+export function richText(text) {
+  return esc(text).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
+}
+
 export function toast(message) {
   let el = $('.toast');
   if (!el) {

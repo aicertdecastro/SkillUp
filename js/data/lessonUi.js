@@ -25,6 +25,11 @@ export const ACTIVITY_LABEL = {
   play: 'Choose your play cards',
 };
 
+// Sports that word an activity differently (checked before ACTIVITY_LABEL).
+export const ACTIVITY_LABEL_BY_SPORT = {
+  volleyball: { positions: 'Drag-and-drop court zones' },
+};
+
 export const COACH_TIPS = {
   learn: 'Tap every card to tick it off as you read.',
   try: 'Give it a go. You can try as many times as you like!',

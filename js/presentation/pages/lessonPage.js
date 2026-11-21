@@ -2,7 +2,7 @@
 import * as auth from '../../business/authService.js';
 import * as lessons from '../../business/lessonService.js';
 import { icons, cardIcon, uiIcons } from '../components/icons.js';
-import { $, esc, toast, setBusy } from '../components/ui.js';
+import { $, esc, richText, toast, setBusy } from '../components/ui.js';
 import { requireLogin } from '../components/guard.js';
 import { renderTopbar } from '../components/learnTopbar.js';
 
@@ -104,7 +104,7 @@ function card(c) {
     <li>
       <button type="button" class="kp${c.done ? ' is-done' : ''}" data-card="${c.no}" aria-pressed="${c.done}">
         <span class="kp-art">${cardIcon(c.icon)}<span class="kp-label">${esc(c.label)}</span></span>
-        <span class="kp-text"><small>Key point ${c.no}</small><span>${c.heading ? `<b>${esc(c.heading)}</b> ` : ''}${esc(c.body)}</span></span>
+        <span class="kp-text"><small>Key point ${c.no}</small><span>${c.heading ? `<b>${esc(c.heading)}</b> ` : ''}${richText(c.body)}</span></span>
         <span class="kp-check">${uiIcons.tick()}</span>
       </button>
     </li>`;
