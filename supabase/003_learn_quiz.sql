@@ -1,5 +1,5 @@
 -- =====================================================================
--- SkillUp · 003 · Learn, quiz + review (lesson page, sport final, results)
+-- SkillUp - 003 - Learn, quiz + review (lesson page, sport final, results)
 -- Run after schema.sql, seed.sql and 002_home.sql. Then run 003_content.sql.
 -- =====================================================================
 
@@ -92,8 +92,8 @@ language sql stable security definer set search_path = public as $$
 -- ---------------------------------------------------------------------
 
 -- Everything the lesson page needs in one call.
--- p_sport null  → the sport the learner played last (or the first sport).
--- p_lesson_no null → the unfinished lesson touched last in that sport (or the first unfinished, or 1).
+-- p_sport null  -> the sport the learner played last (or the first sport).
+-- p_lesson_no null -> the unfinished lesson touched last in that sport (or the first unfinished, or 1).
 -- Opening a lesson marks it started, so "Continue" on the dashboard points here.
 create function public.get_lesson(p_sport text default null, p_lesson_no int default null)
 returns jsonb language plpgsql security definer set search_path = public as $$
@@ -217,7 +217,7 @@ begin
 end $$;
 
 -- ---------------------------------------------------------------------
--- 6. SPORT FINAL QUIZ (start → answer each question → finish → result)
+-- 6. SPORT FINAL QUIZ (start -> answer each question -> finish -> result)
 -- ---------------------------------------------------------------------
 
 -- Start (or resume) the final. Questions come without answers, except the ones
