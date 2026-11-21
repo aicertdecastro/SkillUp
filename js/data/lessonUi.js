@@ -28,6 +28,7 @@ export const ACTIVITY_LABEL = {
 // Sports that word an activity differently (checked before ACTIVITY_LABEL).
 export const ACTIVITY_LABEL_BY_SPORT = {
   volleyball: { positions: 'Drag-and-drop court zones' },
+  soccer: { positions: 'Drag-and-drop field positions' },
 };
 
 export const COACH_TIPS = {

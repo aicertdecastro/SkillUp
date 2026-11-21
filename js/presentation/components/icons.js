@@ -85,6 +85,20 @@ const cardArt = {
   serve: () => `<circle cx="34" cy="58" r="13" fill="${Y}" ${S}/><path d="M60 86V44l16-20M60 56l-12 4" fill="none" ${S}/>
     <path d="M80 18a14 14 0 0 1 4 18" fill="none" ${S} stroke-dasharray="4 6"/>`,
   ready: () => `<circle cx="50" cy="20" r="10" fill="${B}" ${S}/><path d="M50 30v26M30 44l20 6 20-6M50 56l-16 14v16M50 56l16 14v16" fill="none" ${S}/>`,
+
+  // Soccer lessons 1-5 (Figma)
+  boot: () => `<path d="M14 40h30l6 18h28c6 0 10 4 10 10v6H14z" fill="${B}" ${S}/><path d="M24 74v8M44 74v8M64 74v8" fill="none" ${S}/>`,
+  kick: () => `<path d="M12 46h22l4 12h18c4 0 8 3 8 8v4H12z" fill="${B}" ${S}/><circle cx="80" cy="36" r="10" fill="#fff" ${S}/>
+    <path d="M66 50l8-6M70 60l12-4" fill="none" ${S} stroke-dasharray="3 6"/>`,
+  'dribble-foot': () => `<path d="M10 34h24l4 12h16c4 0 8 3 8 8v4H10z" fill="${B}" ${S}/><circle cx="74" cy="70" r="12" fill="#fff" ${S}/>
+    <path d="M34 74h20" fill="none" ${S} stroke-dasharray="3 6"/>`,
+  'ball-out': () => `<rect x="12" y="20" width="50" height="62" fill="${G}" ${S}/><path d="M62 12v78" fill="none" stroke="#fff" stroke-width="6"/>
+    <circle cx="78" cy="38" r="11" fill="#fff" ${S}/><path d="M70 58l14 14M84 58L70 72" fill="none" stroke="#d93b3b" stroke-width="6" stroke-linecap="round"/>`,
+  offside: () => `<path d="M30 90V12" fill="none" ${S}/><path d="M30 14h44l-10 14 10 14H30z" fill="${Y}" ${S}/>
+    <path d="M30 14h11v14H30zM52 14h11v14H52zM41 28h11v14H41zM63 28h11v14H63" fill="#d93b3b" stroke="none"/>`,
+  spread: () => `<circle cx="50" cy="50" r="8" fill="${O}" ${S}/>
+    <circle cx="18" cy="22" r="8" fill="${B}" ${S}/><circle cx="82" cy="22" r="8" fill="${B}" ${S}/><circle cx="18" cy="80" r="8" fill="${B}" ${S}/><circle cx="82" cy="80" r="8" fill="${B}" ${S}/>
+    <path d="M40 40l-12-10M60 40l12-10M40 60l-12 10M60 60l12 10" fill="none" ${S} stroke-width="4"/>`,
   gear: () => `<circle cx="34" cy="38" r="20" fill="${O}" ${S}/><path d="M14 38h40M34 18v40" fill="none" ${S} stroke-width="3"/>
     <path d="M48 70c10 0 14-8 22-8h10c4 0 8 4 8 10v8H48z" fill="${B}" ${S}/>`,
   steps: () => `<path d="M16 80l14-12M38 62l14-12M60 44l14-12" fill="none" ${S}/>

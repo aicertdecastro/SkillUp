@@ -113,7 +113,7 @@ function card(c) {
 function render() {
   const allDone = lessons.allCardsDone(L.cards);
   content.innerHTML = `
-    <div class="lesson-grid">
+    <div class="lesson-grid sport--${L.sportId}">
       ${sidebar()}
       <section class="lesson-main">
         <p class="eyebrow">${esc(L.eyebrow)}</p>
