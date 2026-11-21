@@ -19,8 +19,9 @@ Login, sign-up, dashboard, learner profile, and **Learn, quiz + review** (lesson
    5. `supabase/003_content.sql` (lesson cards + finals; rows marked DRAFT need a coach's review)
    6. `supabase/004_basketball_lessons.sql` (exact Basketball lesson 1–5 cards from the Figma screens)
    7. `supabase/005_volleyball_lessons.sql` (exact Volleyball lesson 1–5 cards from the Figma screens)
+   8. `supabase/006_soccer_lessons.sql` (exact Soccer lesson 1–5 cards, "Timing bar: shooting", Soccer final Q9–Q10)
 
-   Already ran the earlier files? Only run the new ones (e.g. just 7), then `demo_jamie.sql` again.
+   Already ran the earlier files? Only run the new ones (e.g. just 8), then `demo_jamie.sql` again.
    Run each file whole, with nothing highlighted in the SQL Editor.
 5. **Project Settings → API**: copy the **Project URL** and the **anon / publishable** key into `js/data/config.js`.
    Never use the service_role / secret key in the website.
@@ -86,6 +87,13 @@ Volleyball lessons 1–5:
 - [ ] Sidebar and Lesson 2 footer say "Drag-and-drop court zones"; Lesson 4 "Timing bar: underhand serve"; Lesson 1 footer "Next lesson: Positions and court zones"
 - [ ] Finish all 5 volleyball lessons → Volleyball Sport Final unlocks
 
+Soccer lessons 1–5:
+- [ ] Jamie → Soccer tab: Lesson 1 Up next, progress 0 / 5, challenge levels 0 / 8 (matches the Figma screens)
+- [ ] Lesson page colours follow the sport: Basketball orange, Volleyball yellow, Soccer green
+- [ ] Each lesson matches its Figma screen: card text, labels (11 v 11, Goal!, Only GK, Gear, GK, DF, MF, FW, Handball, Foul, Ball out, Offside, Pass, Dribble, Laces, Spread out, Pass, Shoot, Defense), counter 0 / 4 (Lesson 4: 0 / 3)
+- [ ] Sidebar and footers: "Drag-and-drop field positions", "Timing bar: shooting"; Lesson 1 footer "Next lesson: Positions"
+- [ ] Finish all 5 soccer lessons → Soccer Sport Final unlocks; Q9 is "Why should your team spread out?"
+
 ## Folder map
 ```
 index.html  signup.html  dashboard.html  profile.html  lesson.html  final.html  result.html
@@ -94,7 +102,8 @@ js/presentation/         pages/ (one script per page), components/ (icons, ui he
 js/business/             authService.js, homeService.js, lessonService.js, quizService.js
 js/data/                 config.js, supabaseClient.js, *Repository.js, sportInfo.js, lessonUi.js
 supabase/                schema.sql, seed.sql, 002_home.sql, 003_learn_quiz.sql, 003_content.sql,
-                         004_basketball_lessons.sql, 005_volleyball_lessons.sql, demo_jamie.sql, test_unlock_final.sql (test only)
+                         004_basketball_lessons.sql, 005_volleyball_lessons.sql,
+                         006_soccer_lessons.sql, demo_jamie.sql, test_unlock_final.sql (test only)
 assets/img/               artwork cut from the Figma export
 CLAUDE.md                rules Claude Code follows in this project
 ```
