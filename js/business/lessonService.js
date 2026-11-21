@@ -35,6 +35,20 @@ function activity(l) {
   return ACTIVITY_LABEL[l.challenge_type ?? 'none'] ?? l.challenge_title ?? '';
 }
 
+// The big footer button. A lesson with a challenge sends you to it;
+// a lesson without one (Lesson 1) moves on to the next lesson, or the Sport Final after the last.
+function footer(d) {
+  const lesson = d.lesson;
+  const me = d.lessons.find((l) => l.lesson_no === lesson.lesson_no);
+  if (lesson.challenge_type) {
+    return { kind: 'challenge', label: `Play the challenge: ${activity(me)}` };
+  }
+  const next = d.lessons.find((l) => l.lesson_no === lesson.lesson_no + 1);
+  return next
+    ? { kind: 'next', label: `Next lesson: ${next.title}`, href: lessonHref(d.sport.id, next.lesson_no) }
+    : { kind: 'next', label: `${d.sport.name} Sport Final`, href: finalHref(d.sport.id) };
+}
+
 function shape(d) {
   const sport = d.sport;
   const lesson = d.lesson;
@@ -50,6 +64,9 @@ function shape(d) {
     goal: lesson.goal,
     eyebrow: `${sport.name} · Lesson ${lesson.lesson_no} of ${d.lessons_total}`,
     href: lessonHref(sport.id, lesson.lesson_no),
+    completed: d.progress.completed,
+    back: lesson.lesson_no > 1 ? lessonHref(sport.id, lesson.lesson_no - 1) : 'dashboard.html',
+    footer: footer(d),
     steps: STEPS.map((s, i) => ({ ...s, n: i + 1, current: s.id === 'learn' })),
     video: {
       url: lesson.video_url,
@@ -97,7 +114,9 @@ export async function tickCard(lessonId, cardNo) {
   return repo.tickCard(lessonId, cardNo);
 }
 
-// "Next: Try it" — the server refuses unless every card is ticked.
-export async function goToTryIt(lessonId) {
-  await repo.saveStep(lessonId, 'try');
+// Footer button: finish the lesson. The server refuses unless every card is ticked,
+// and pays +10 only the first time.
+export async function finishLesson(lessonId) {
+  const r = await repo.completeLesson(lessonId);
+  return { pointsAwarded: r.points_awarded };
 }

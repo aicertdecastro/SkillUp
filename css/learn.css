@@ -123,7 +123,9 @@
 .kp.is-done .kp-check { background: var(--green); border-color: var(--navy); color: var(--navy); }
 .kp-hint { text-align: center; font-size: 12px; color: var(--slate); margin: 8px 0 14px; }
 .lesson-foot { display: flex; justify-content: space-between; gap: 12px; }
+.lesson-foot { align-items: center; }
 .lesson-foot .btn { height: 46px; font-size: 18px; }
+.lesson-foot #next { height: auto; min-height: 46px; padding: 8px 18px; line-height: 1.2; text-align: center; }
 .btn[aria-disabled='true'] { opacity: .55; }
 
 /* ================= Sport Final quiz ================= */

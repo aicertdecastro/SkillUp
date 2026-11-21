@@ -12,7 +12,15 @@ const content = $('#content');
 let L;
 
 try {
-  L = await lessons.loadLesson(lessons.readLessonParams(location.search));
+  await load(lessons.readLessonParams(location.search));
+} catch (err) {
+  content.innerHTML = `<p class="load-error">${esc(auth.friendlyError(err))}</p>`;
+}
+
+// Also used after finishing a lesson, so the sidebar, progress, points chip and
+// Sport Final button update without a page refresh.
+async function load(params) {
+  L = await lessons.loadLesson(params);
   history.replaceState(null, '', L.href);          // so refresh / share stays on this lesson
   document.title = `SkillUp · ${L.title}`;
   renderTopbar($('#topbar'), {
@@ -20,8 +28,6 @@ try {
     right: `<span class="chip chip--points"><img src="assets/img/icon-coin.png" alt="">${esc(L.pointsChip)}</span>`,
   });
   render();
-} catch (err) {
-  content.innerHTML = `<p class="load-error">${esc(auth.friendlyError(err))}</p>`;
 }
 
 // ---------------------------------------------------------------- render
@@ -98,7 +104,7 @@ function card(c) {
     <li>
       <button type="button" class="kp${c.done ? ' is-done' : ''}" data-card="${c.no}" aria-pressed="${c.done}">
         <span class="kp-art">${cardIcon(c.icon)}<span class="kp-label">${esc(c.label)}</span></span>
-        <span class="kp-text"><small>Key point ${c.no}</small><span><b>${esc(c.heading)}</b> ${esc(c.body)}</span></span>
+        <span class="kp-text"><small>Key point ${c.no}</small><span>${c.heading ? `<b>${esc(c.heading)}</b> ` : ''}${esc(c.body)}</span></span>
         <span class="kp-check">${uiIcons.tick()}</span>
       </button>
     </li>`;
@@ -130,8 +136,8 @@ function render() {
           <ul class="kp-list" id="cards">${L.cards.map(card).join('')}</ul>
           <p class="kp-hint">Scroll inside the box to see all ${L.cards.length} key points.</p>
           <div class="lesson-foot">
-            <a class="btn" href="dashboard.html">Back</a>
-            <button type="button" class="btn btn--blue" id="next" aria-disabled="${!allDone}">Next: Try it</button>
+            <a class="btn" href="${L.back}">Back</a>
+            <button type="button" class="btn btn--blue" id="next" aria-disabled="${!allDone}">${esc(L.footer.label)}</button>
           </div>
         </div>
       </section>
@@ -163,7 +169,7 @@ content.addEventListener('click', async (e) => {
   if (step && step.dataset.step !== 'learn') return toast('Coming soon! This part is still being built.');
 
   const next = e.target.closest('#next');
-  if (next) return goNext(next);
+  if (next) return finish(next);
 });
 
 async function tick(no) {
@@ -178,15 +184,22 @@ async function tick(no) {
   }
 }
 
-async function goNext(button) {
+// Footer button: finish the lesson (+10 the first time), then go on.
+async function finish(button) {
   if (!lessons.allCardsDone(L.cards)) return toast('Tick every key point card first.');
   setBusy(button, true, 'Saving…');
   try {
-    await lessons.goToTryIt(L.lessonId);
-    toast('Nice reading! “Try it” is coming soon.');
+    const { pointsAwarded } = await lessons.finishLesson(L.lessonId);
+    const done = pointsAwarded ? `+${pointsAwarded} pts! Lesson finished.` : 'Lesson finished.';
+    if (L.footer.kind === 'next') {
+      toast(done);
+      setTimeout(() => { location.href = L.footer.href; }, 900);   // let the toast be seen
+      return;
+    }
+    toast(`${done} The challenge is coming soon!`);
+    await load({ sportId: L.sportId, lessonNo: L.lessonNo });
   } catch (err) {
     toast(auth.friendlyError(err));
-  } finally {
     setBusy(button, false);
   }
 }

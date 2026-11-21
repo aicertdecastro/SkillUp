@@ -59,9 +59,46 @@ const cardArt = {
   brain: () => `<path d="M50 18c-18 0-30 12-30 28 0 10 6 16 10 20v14h40V66c4-4 10-10 10-20 0-16-12-28-30-28z" fill="${Y}" ${S}/><path d="M42 80h16M44 48l6 6 10-12" fill="none" ${S}/>`,
   star: () => `<path d="M50 12l11 23 25 3-18 17 5 25-23-12-23 12 5-25-18-17 25-3z" fill="${Y}" ${S}/>`,
   goal: () => `<path d="M14 80V26h72v54" fill="#fff" ${S}/><path d="M14 40h72M14 54h72M14 68h72M32 26v54M50 26v54M68 26v54" fill="none" stroke="#1b2a4a" stroke-width="2"/><circle cx="50" cy="74" r="9" fill="${O}" ${S}/>`,
+  // Basketball lessons 1-5 (Figma)
+  players: () => `<circle cx="28" cy="34" r="10" fill="${B}" ${S}/><circle cx="72" cy="34" r="10" fill="${O}" ${S}/>
+    <path d="M12 70c0-14 32-14 32 0M56 70c0-14 32-14 32 0" fill="none" ${S}/>
+    <rect x="34" y="76" width="32" height="16" rx="4" fill="#fff" ${S} stroke-width="3"/>
+    <text x="50" y="88" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="11" fill="#1b2a4a">5 v 5</text>`,
+  score: () => `<rect x="10" y="26" width="80" height="48" rx="10" fill="${Y}" ${S}/>
+    <text x="50" y="60" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="22" fill="#1b2a4a">1·2·3</text>`,
+  gear: () => `<circle cx="34" cy="38" r="20" fill="${O}" ${S}/><path d="M14 38h40M34 18v40" fill="none" ${S} stroke-width="3"/>
+    <path d="M48 70c10 0 14-8 22-8h10c4 0 8 4 8 10v8H48z" fill="${B}" ${S}/>`,
+  steps: () => `<path d="M16 80l14-12M38 62l14-12M60 44l14-12" fill="none" ${S}/>
+    <circle cx="22" cy="74" r="6" fill="${O}" ${S} stroke-width="3"/><circle cx="44" cy="56" r="6" fill="${O}" ${S} stroke-width="3"/>
+    <circle cx="66" cy="38" r="6" fill="${O}" ${S} stroke-width="3"/><circle cx="84" cy="22" r="7" fill="${O}" ${S} stroke-width="3"/>`,
+  dribble2: () => `<circle cx="50" cy="66" r="16" fill="${O}" ${S}/><path d="M18 40V24M26 38V18M34 40V24M66 40V24M74 38V18M82 40V24" fill="none" ${S}/>
+    <path d="M42 18l16 16M58 18L42 34" fill="none" stroke="#d93b3b" stroke-width="6" stroke-linecap="round"/>`,
+  foul: () => `<path d="M30 86V48M30 48V22M42 48V14M54 48V18M66 50V28M30 86h36l8-26c2-8-6-12-10-6l-6 12" fill="${Y}" ${S}/>`,
+  out: () => `<rect x="12" y="20" width="44" height="60" fill="${G}" ${S}/><path d="M56 12v76" fill="none" stroke="#fff" stroke-width="6"/>
+    <path d="M56 12v76" fill="none" ${S} stroke-dasharray="2 10"/><circle cx="74" cy="50" r="12" fill="${O}" ${S}/>`,
+  open: () => `<circle cx="50" cy="30" r="12" fill="${B}" ${S}/><path d="M28 80c0-24 44-24 44 0" fill="${B}" ${S}/>
+    <path d="M14 20l10 10M86 20L76 30" fill="none" stroke="${G}" stroke-width="6" stroke-linecap="round"/>`,
+  run: () => `<circle cx="58" cy="20" r="10" fill="${O}" ${S}/><path d="M54 32L44 56l16 10-6 22M44 56l-16 8M50 40l18 8M14 40h14M10 54h12" fill="none" ${S}/>`,
+  shoot: () => `<path d="M58 16h30v20H58z" fill="#fff" ${S}/><path d="M64 36h18l-4 16H68z" fill="none" ${S}/>
+    <circle cx="26" cy="72" r="14" fill="${O}" ${S}/><path d="M38 60c8-14 16-20 24-22" fill="none" ${S} stroke-dasharray="4 8"/>`,
+  shield: () => `<path d="M50 10l34 12v26c0 20-14 34-34 42C30 82 16 68 16 48V22z" fill="${B}" ${S}/><path d="M34 50l12 12 22-24" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>`,
 };
-export const cardIcon = (key) =>
-  `<svg viewBox="0 0 100 100" aria-hidden="true">${(cardArt[key] ?? cardArt.ball)()}</svg>`;
+
+// "badge:PG" → letters in a blue circle; "badge:PF|C" → two circles (blue, then orange).
+function letterBadges(text) {
+  const parts = text.split('|');
+  const r = parts.length > 1 ? 24 : 34;
+  const xs = parts.length > 1 ? [28, 72] : [50];
+  return parts.map((t, i) => `
+    <circle cx="${xs[i]}" cy="50" r="${r}" fill="${i ? O : B}" ${S}/>
+    <text x="${xs[i]}" y="${50 + r * 0.32}" text-anchor="middle" font-family="Arial Black, sans-serif"
+          font-size="${r * 0.85}" fill="#fff" stroke="#1b2a4a" stroke-width="1.5">${t.replace(/[<>&"]/g, '')}</text>`).join('');
+}
+
+export function cardIcon(key = '') {
+  const art = key.startsWith('badge:') ? letterBadges(key.slice(6)) : (cardArt[key] ?? cardArt.ball)();
+  return `<svg viewBox="0 0 100 100" aria-hidden="true">${art}</svg>`;
+}
 
 export const uiIcons = {
   lock: () => `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2" fill="#fff" stroke="#1b2a4a" stroke-width="2.4"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="#1b2a4a" stroke-width="2.4"/></svg>`,

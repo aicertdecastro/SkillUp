@@ -19,10 +19,10 @@ export const WAYS_TO_EARN = [
 // What the sidebar says each lesson's activity is (lesson 1 has no challenge).
 export const ACTIVITY_LABEL = {
   none: 'Quiz + drill',
-  positions: 'Drag-and-drop positions',
-  rules: 'Rule scenarios',
+  positions: 'Drag-and-drop court positions',
+  rules: 'Clickable rule scenarios',
   timing: null,            // uses the level title, e.g. "Timing bar: free throw"
-  play: 'Choose your play',
+  play: 'Choose your play cards',
 };
 
 export const COACH_TIPS = {
