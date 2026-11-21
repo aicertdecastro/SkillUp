@@ -1,0 +1,127 @@
+/* SkillUp · shared styles. Every value below is measured from the Figma export (1440 px frames). */
+/* Fonts (Lilita One + Nunito) are loaded by a <link> in each page's <head>. */
+:root {
+  /* colors sampled from the design */
+  --navy: #1b2a4a;
+  --orange: #ff7a1a;
+  --orange-light: #ff8b39;
+  --orange-shadow: #b8460a;
+  --orange-deep: #c2510a;
+  --blue: #1f64d6;
+  --blue-shadow: #143f8a;
+  --cream: #fff6e9;
+  --divider: #f2d9bc;
+  --white: #ffffff;
+  --yellow: #ffc93c;
+  --yellow-shadow: #c99200;
+  --green: #36c26b;
+  --green-shadow: #1f8a48;
+  --peach: #ffe3cc;
+  --yellow-soft: #fff1c4;
+  --green-soft: #d4f5df;
+  --sky: #dce8ff;
+  --slate: #5e6679;
+  --muted: #4a5878;
+  --red: #d93b3b;
+
+  --basketball: #ff7a1a;  --basketball-shadow: #c2510a;
+  --volleyball: #ffd66f;  --volleyball-shadow: #d9af45;
+  --soccer: #71d190;      --soccer-shadow: #61aa77;
+
+  --font-head: 'Lilita One', 'Arial Black', sans-serif;
+  --font-body: 'Nunito', system-ui, sans-serif;
+  --speed: 180ms;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { font-family: var(--font-body); font-weight: 700; color: var(--navy); background: var(--orange); min-height: 100vh; }
+h1, h2, h3 { font-family: var(--font-head); font-weight: 400; margin: 0; line-height: 1.48; }
+p { margin: 0; }
+img { display: block; }
+[hidden] { display: none !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- buttons (3px navy outline + solid bottom shadow) ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 52px; padding: 0 24px;
+  font-family: var(--font-head); font-size: 20px; line-height: 1; color: var(--navy); text-decoration: none;
+  background: var(--white); border: 3px solid var(--navy); border-radius: 14px;
+  box-shadow: 0 5px 0 var(--navy); cursor: pointer;
+  transition: transform var(--speed), box-shadow var(--speed), filter var(--speed);
+}
+.btn:hover { filter: brightness(1.04); }
+.btn:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--navy); }
+.btn[disabled] { opacity: .65; cursor: wait; }
+.btn--orange { background: var(--orange); box-shadow: 0 5px 0 var(--orange-shadow); }
+.btn--green  { background: var(--green);  box-shadow: 0 5px 0 var(--green-shadow); }
+.btn--blue   { background: var(--blue); color: var(--white); box-shadow: 0 5px 0 var(--blue-shadow); }
+.btn--yellow { background: var(--yellow); box-shadow: 0 5px 0 var(--yellow-shadow); }
+.btn:active.btn--orange, .btn:active.btn--green, .btn:active.btn--blue, .btn:active.btn--yellow { box-shadow: none; }
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+
+/* ---------- form fields ---------- */
+.field { display: grid; gap: 6px; margin-bottom: 16px; text-align: left; }
+.field label { font-size: 13px; line-height: 19px; font-weight: 800; letter-spacing: 1px; }
+.field input {
+  height: 52px; width: 100%; padding: 0 16px;
+  font: 600 16px/1 var(--font-body); color: var(--navy);
+  background: var(--cream); border: 3px solid var(--navy); border-radius: 14px;
+}
+.field input::placeholder { color: #6b7385; opacity: 1; }
+.field input[aria-invalid='true'] { border-color: var(--red); background: #fff0f0; }
+.field .error { color: var(--red); font-size: 13px; font-weight: 800; }
+.field .error:empty { display: none; }
+.input-prefix { position: relative; }
+.input-prefix span { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-weight: 700; color: #6b7385; }
+.input-prefix input { padding-left: 34px; }
+.form-alert {
+  background: #fff0f0; border: 3px solid var(--red); color: var(--red); border-radius: 12px;
+  padding: 10px 14px; margin-bottom: 14px; font-size: 14px; font-weight: 800; text-align: left;
+}
+
+/* ---------- app frame (dashboard + profile) ---------- */
+.app { padding: 28px 28px 41px; }
+.panel {
+  max-width: 1384px; margin: 0 auto; background: var(--cream);
+  border-radius: 36px; box-shadow: 0 13px 0 var(--orange-shadow); overflow: hidden;
+}
+.topbar { display: flex; align-items: center; border-bottom: 4px solid var(--divider); }
+.wordmark { font-family: var(--font-head); font-size: 34px; line-height: 1; color: var(--blue); text-decoration: none; letter-spacing: .5px; }
+.wordmark span { color: var(--orange); }
+.avatar {
+  display: grid; place-items: center; flex: none; border-radius: 50%;
+  background: var(--green); border: 3px solid var(--navy); color: var(--navy);
+  font-family: var(--font-head); line-height: 1; text-decoration: none;
+}
+
+/* ---------- loading, errors, toast ---------- */
+.loading { display: grid; place-items: center; padding: 90px 20px; font-family: var(--font-head); font-size: 24px; }
+.loading::before {
+  content: ''; width: 48px; height: 48px; margin-bottom: 14px; border-radius: 50%;
+  border: 6px solid var(--peach); border-top-color: var(--orange); animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.load-error { text-align: center; padding: 80px 20px; font-family: var(--font-head); font-size: 22px; }
+.toast {
+  position: fixed; left: 50%; bottom: 28px; z-index: 50; transform: translate(-50%, 20px); opacity: 0;
+  background: var(--navy); color: var(--white); border-radius: 14px; padding: 12px 20px; font-weight: 800;
+  transition: opacity var(--speed), transform var(--speed); pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* Laptops narrower than the 1440 px design: shrink the whole page evenly instead of rearranging it */
+@media (max-width: 1439px) { .app { zoom: .94; } }
+@media (max-width: 1353px) { .app { zoom: .88; } }
+@media (max-width: 1267px) { .app { zoom: .82; } }
+@media (max-width: 1180px) { .app { zoom: .76; } }
+@media (max-width: 1094px) { .app { zoom: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+@media (max-width: 700px) {
+  .app { padding: 10px 10px 24px; }
+  .panel { border-radius: 24px; box-shadow: 0 8px 0 var(--orange-shadow); }
+}

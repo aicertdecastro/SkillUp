@@ -1,0 +1,49 @@
+/* SkillUp · login + sign-up (measured from the 1440 × 960 "Player login" frame) */
+body.auth-page {
+  background-color: var(--orange);
+  background-image:
+    radial-gradient(circle at 50% 330px, rgba(255, 214, 170, .85) 0, rgba(255, 190, 130, .45) 90px, rgba(255, 139, 57, 0) 230px),
+    repeating-conic-gradient(from -3deg at 50% 330px, var(--orange) 0deg 11.25deg, var(--orange-light) 11.25deg 22.5deg);
+  background-attachment: fixed;
+}
+.auth { position: relative; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 65px 16px 60px; overflow-x: hidden; }
+
+.auth-logo { width: 519px; max-width: 92vw; height: auto; }
+
+.tagline {
+  width: 462px; max-width: 100%; margin-top: 26px; padding: 8px 18px;
+  background: var(--cream); border: 3px solid var(--navy); border-radius: 12px; box-shadow: 0 5px 0 var(--navy);
+  font-size: 18px; line-height: 27px; font-weight: 700;
+}
+
+.auth-card {
+  width: 480px; max-width: 100%; margin-top: 29px; padding: 22px 26px 25px; text-align: center;
+  background: var(--white); border: 6px solid var(--blue); border-radius: 28px; box-shadow: 0 12px 0 var(--blue-shadow);
+}
+.auth-card h2 { font-size: 24px; line-height: 36px; margin-bottom: 11px; }
+.auth-card .field label { line-height: 20px; }
+.auth-card .field:last-of-type { margin-bottom: 17px; }
+.check { display: flex; align-items: center; gap: 10px; margin: 0 0 17px; font-size: 14px; font-weight: 700; cursor: pointer; }
+.check input { appearance: none; width: 20px; height: 20px; margin: 0; border: 3px solid var(--navy); border-radius: 5px; background: var(--white); display: grid; place-items: center; cursor: pointer; }
+.check input:checked { background: var(--blue); }
+.check input:checked::after { content: ''; width: 5px; height: 9px; border: solid var(--white); border-width: 0 3px 3px 0; transform: translateY(-1px) rotate(45deg); }
+.auth-card .btn { width: 100%; height: 56px; }
+
+.auth-switch { display: flex; align-items: center; gap: 16px; margin-top: 29px; font-family: var(--font-head); font-size: 20px; }
+.auth-switch .btn { height: 51px; padding: 0 22px; }
+
+/* floating sport art, placed like the Figma frame (centered 1440 px canvas) */
+.deco { position: absolute; pointer-events: none; }
+.deco--basketball { width: 118px; left: calc(50% - 628px); top: 128px; }
+.deco--trophy     { width: 92px;  left: calc(50% + 508px); top: 88px; }
+.deco--soccer     { width: 105px; left: calc(50% - 567px); top: 736px; }
+.deco--volleyball { width: 109px; left: calc(50% + 456px); top: 733px; }
+body.signup .deco--soccer, body.signup .deco--volleyball { top: 760px; }
+
+@media (max-width: 1150px) { .deco { display: none; } }
+@media (max-width: 520px) {
+  .auth { padding-top: 30px; }
+  .tagline { font-size: 16px; line-height: 24px; }
+  .auth-card { padding: 16px 16px 18px; border-width: 5px; }
+  .auth-switch { flex-wrap: wrap; justify-content: center; }
+}
