@@ -191,7 +191,7 @@ async function finish(button) {
   try {
     const { pointsAwarded } = await lessons.finishLesson(L.lessonId);
     const done = pointsAwarded ? `+${pointsAwarded} pts! Lesson finished.` : 'Lesson finished.';
-    if (L.footer.kind === 'next') {
+    if (L.footer.href) {                 // next lesson, Sport Final, or a built challenge
       toast(done);
       setTimeout(() => { location.href = L.footer.href; }, 900);   // let the toast be seen
       return;

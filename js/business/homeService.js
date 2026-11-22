@@ -3,6 +3,7 @@ import * as homeRepo from '../data/homeRepository.js';
 import { SPORT_INFO, LESSON_MINUTES } from '../data/sportInfo.js';
 import { USERNAME_RE } from './authService.js';
 import { lessonHref } from './lessonService.js';
+import { challengeHref, isChallengeReady } from './challengeService.js';
 
 const STEP_LABEL = { learn: 'Learn', try: 'Try it', check: 'Quick check', play: 'Play' };
 const STATUS_LABEL = { complete: 'Complete', up_next: 'Up next', in_progress: 'In progress', not_started: 'Not started' };
@@ -61,6 +62,8 @@ export async function getDashboard() {
            : next ? `LVL ${next.lesson_no}` : 'DONE!',
         nextLessonNo: next?.lesson_no ?? null,
         playHref: next ? lessonHref(s.id, next.lesson_no) : null,
+        challengesHref: challengeHref(s.id),
+        challengesReady: isChallengeReady(s.id),
         info: SPORT_INFO[s.id],
       };
     }),

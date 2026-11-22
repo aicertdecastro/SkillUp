@@ -1,7 +1,8 @@
 // PRESENTATION LAYER · results + review screen.
-// Now: result.html?quiz=<attempt id> (Sport Final). Later: ?level=<attempt id> for challenge games.
+// result.html?quiz=<attempt id> (Sport Final) or result.html?level=<attempt id> (challenge game).
 import * as auth from '../../business/authService.js';
 import * as quiz from '../../business/quizService.js';
+import * as ch from '../../business/challengeService.js';
 import { icons } from '../components/icons.js';
 import { $, esc } from '../components/ui.js';
 import { requireLogin } from '../components/guard.js';
@@ -10,12 +11,14 @@ import { isSoundOn, setSoundOn, playCelebrate } from '../components/sound.js';
 await requireLogin();
 
 const content = $('#content');
+const challengeAttempt = ch.readResultParam(location.search);
 const attemptId = quiz.readAttemptParam(location.search);
 let R;
 
 try {
-  if (!attemptId) throw new Error('Quiz not found');
-  R = await quiz.getQuizResult(attemptId);
+  if (challengeAttempt) R = await ch.getChallengeResult(challengeAttempt);
+  else if (attemptId) R = await quiz.getQuizResult(attemptId);
+  else throw new Error('Quiz not found');
   document.title = `SkillUp · ${R.title}`;
   render();
   if (R.passed) playCelebrate();   // browsers may block sound until the first tap

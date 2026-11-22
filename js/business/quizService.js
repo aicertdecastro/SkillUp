@@ -100,7 +100,8 @@ export const progressText = (i, total) => `Question ${i + 1} of ${total}`;
 const TIER_LABEL = Object.fromEntries(TIERS.map((t) => [t.id, t.label]));
 const tierRank = (id) => TIERS.findIndex((t) => t.id === id);
 
-function nextTierHint(tier) {
+// Also used by the challenge results (challengeService.js).
+export function nextTierHint(tier) {
   if (tier === 'gold') return 'Perfect score. Gold is the top badge!';
   const next = TIERS[tierRank(tier) + 1];
   return next.id === 'gold' ? 'Score 100% to earn gold.' : `Score ${next.min}% or more to earn ${next.label.toLowerCase()}.`;

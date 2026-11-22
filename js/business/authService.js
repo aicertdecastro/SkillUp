@@ -20,7 +20,14 @@ export function friendlyError(err) {
   if (/already answered/i.test(msg)) return 'You already answered that one.';
   if (/answer every question first/i.test(msg)) return 'Answer every question first.';
   if (/no quiz for this sport/i.test(msg)) return 'This Sport Final isn’t ready yet. Check back soon!';
-  if (/lesson not found|quiz not found|not finished yet/i.test(msg)) return 'We couldn’t find that. Head back to the dashboard.';
+  if (/lesson not found|quiz not found|challenge not found|not finished yet/i.test(msg)) return 'We couldn’t find that. Head back to the dashboard.';
+  // challenges (messages raised in supabase/007_basketball_challenges.sql)
+  if (/finish lesson (\d) first/i.test(msg)) return `Finish Lesson ${msg.match(/lesson (\d)/i)[1]} first to unlock this challenge.`;
+  if (/pass level 1 first/i.test(msg)) return 'Pass Level 1 first to unlock Level 2.';
+  if (/not ready yet/i.test(msg)) return 'This challenge is coming soon!';
+  if (/try is finished/i.test(msg)) return 'This try is over. Press Reset or Try again.';
+  if (/already placed/i.test(msg)) return 'That player or spot is already used.';
+  if (/invalid move|invalid timing result/i.test(msg)) return 'That move didn’t count. Please try again.';
   return 'Something went wrong. Please try again.';
 }
 

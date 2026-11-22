@@ -2,6 +2,7 @@
 import * as repo from '../data/lessonRepository.js';
 import { LESSON_MINUTES } from '../data/sportInfo.js';
 import { SPORT_IDS, STEPS, WAYS_TO_EARN, ACTIVITY_LABEL, ACTIVITY_LABEL_BY_SPORT, COACH_TIPS } from '../data/lessonUi.js';
+import { challengeHref, isChallengeReady } from './challengeService.js';
 
 const STATUS_LABEL = { complete: 'Done', up_next: 'Up next', in_progress: 'In progress', not_started: 'Not started' };
 
@@ -42,7 +43,12 @@ function footer(d) {
   const lesson = d.lesson;
   const me = d.lessons.find((l) => l.lesson_no === lesson.lesson_no);
   if (lesson.challenge_type) {
-    return { kind: 'challenge', label: `Play the challenge: ${activity(me, d.sport.id)}` };
+    const ready = isChallengeReady(d.sport.id);
+    return {
+      kind: 'challenge',
+      label: `Play the challenge: ${activity(me, d.sport.id)}`,
+      href: ready ? challengeHref(d.sport.id, lesson.challenge_type) : null,
+    };
   }
   const next = d.lessons.find((l) => l.lesson_no === lesson.lesson_no + 1);
   return next

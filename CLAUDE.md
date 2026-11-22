@@ -16,7 +16,10 @@ Static website (HTML + ES modules, no build step, no Node.js) on Supabase. Run w
 
 ## Conventions
 - New database changes go in a new numbered file (`004_…sql`); never edit a file teams have already run.
-- Build lesson links with `lessonHref()` from `js/business/lessonService.js`.
+- Build lesson links with `lessonHref()` from `js/business/lessonService.js`; challenge links with
+  `challengeHref()` from `js/business/challengeService.js`.
+- Challenge answers live in `challenge_keys` (no read policy); every pick is checked by `challenge_move()`.
+  A new sport's challenges = content + keys in a new SQL file, then add it to `CHALLENGES_READY` (`js/data/challengeUi.js`).
 - Unfinished pages: give the link the `soon` class (shows a "Coming soon" toast).
 - Draft content in SQL is marked `-- DRAFT` until a coach reviews it.
 - SQL files are plain ASCII (the Supabase editor paste broke on curly quotes): `''` for apostrophes,

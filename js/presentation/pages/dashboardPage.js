@@ -91,7 +91,7 @@ function render() {
             ${mid.playHref
               ? `<a class="btn btn--orange" href="${mid.playHref}">PLAY LESSON ${mid.nextLessonNo}</a>`
               : `<span class="btn btn--green">ALL DONE!</span>`}
-            <a class="btn btn--blue soon" href="challenges.html?sport=${mid.id}">Challenges</a>
+            <a class="btn btn--blue${mid.challengesReady ? '' : ' soon'}" href="${mid.challengesHref}">Challenges</a>
           </div>
         </div>
       </article>

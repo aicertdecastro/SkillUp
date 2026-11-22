@@ -20,8 +20,9 @@ Login, sign-up, dashboard, learner profile, and **Learn, quiz + review** (lesson
    6. `supabase/004_basketball_lessons.sql` (exact Basketball lesson 1–5 cards from the Figma screens)
    7. `supabase/005_volleyball_lessons.sql` (exact Volleyball lesson 1–5 cards from the Figma screens)
    8. `supabase/006_soccer_lessons.sql` (exact Soccer lesson 1–5 cards, "Timing bar: shooting", Soccer final Q9–Q10)
+   9. `supabase/007_basketball_challenges.sql` (Basketball challenges: Positions, Rules, Timing, Choose play; answers kept on the server)
 
-   Already ran the earlier files? Only run the new ones (e.g. just 8), then `demo_jamie.sql` again.
+   Already ran the earlier files? Only run the new ones (e.g. just 9), then `demo_jamie.sql` again.
    Run each file whole, with nothing highlighted in the SQL Editor.
 5. **Project Settings → API**: copy the **Project URL** and the **anon / publishable** key into `js/data/config.js`.
    Never use the service_role / secret key in the website.
@@ -94,16 +95,32 @@ Soccer lessons 1–5:
 - [ ] Sidebar and footers: "Drag-and-drop field positions", "Timing bar: shooting"; Lesson 1 footer "Next lesson: Positions"
 - [ ] Finish all 5 soccer lessons → Soccer Sport Final unlocks; Q9 is "Why should your team spread out?"
 
+Basketball challenges (Level 1 + Level 2):
+- [ ] A challenge opens only after its lesson (Positions ← Lesson 2, Rules ← 3, Timing ← 4, Choose play ← 5); locked tabs show a lock and say which lesson to finish
+- [ ] Lesson 2–5 footer "Play the challenge: …" → +10 toast → opens that challenge; dashboard **Challenges** opens it too (Volleyball/Soccer still "Coming soon")
+- [ ] Level 2 tab stays locked until Level 1 is passed
+- [ ] Positions: drag a token or tap token → tap spot; a wrong spot adds a miss and shows "Not there! …"; PF/C either low post, SG/SF either wing; Level 2 court is flipped with "?" spots; Reset starts again
+- [ ] Rules: Level 1 traveling = #10, Level 2 foul = #6; a wrong pick shows the hint and adds to "Tries so far"
+- [ ] Timing: START, then SHOOT! (or Space) in the green zone; 5 tries, Level 1 needs 3 hits (2.0 s, 25 %), Level 2 needs 4 (1.4 s, 15 %); coach tip after each try
+- [ ] Choose play: START → 5 s (Level 2: 3 s) countdown; right answer "Great choice! +20 pts" with the reason; wrong or too late → Try again
+- [ ] "Level N passed! +20 pts" only the first time; replays give no points but can upgrade the badge
+- [ ] See results → `result.html?level=…`: score, misses/tries/hits/time, badge tier, Try again, Next (Level 2 → next game → Sport Final)
+- [ ] Refresh in the middle of Positions or Rules → carries on where you were
+- [ ] Jamie: Positions and Rules show both levels passed (from the demo); Timing and Choose play locked until Lessons 4 and 5 are done
+- [ ] Security: in Table Editor `challenge_keys` has RLS on and no policies; the old `submit_challenge` can't be called from the site
+
 ## Folder map
 ```
-index.html  signup.html  dashboard.html  profile.html  lesson.html  final.html  result.html
-css/                     base.css (shared), auth.css, dashboard.css, profile.css, learn.css
-js/presentation/         pages/ (one script per page), components/ (icons, ui helpers, page guard, top bar, sound)
-js/business/             authService.js, homeService.js, lessonService.js, quizService.js
-js/data/                 config.js, supabaseClient.js, *Repository.js, sportInfo.js, lessonUi.js
+index.html  signup.html  dashboard.html  profile.html  lesson.html  final.html  result.html  challenge.html
+css/                     base.css (shared), auth.css, dashboard.css, profile.css, learn.css, challenge.css
+js/presentation/         pages/ (one script per page), components/ (icons, ui helpers, page guard, top bar, sound,
+                         courtArt, games/ = the four challenge games)
+js/business/             authService.js, homeService.js, lessonService.js, quizService.js, challengeService.js
+js/data/                 config.js, supabaseClient.js, *Repository.js, sportInfo.js, lessonUi.js, challengeUi.js
 supabase/                schema.sql, seed.sql, 002_home.sql, 003_learn_quiz.sql, 003_content.sql,
                          004_basketball_lessons.sql, 005_volleyball_lessons.sql,
-                         006_soccer_lessons.sql, demo_jamie.sql, test_unlock_final.sql (test only)
+                         006_soccer_lessons.sql, 007_basketball_challenges.sql,
+                         demo_jamie.sql, test_unlock_final.sql (test only)
 assets/img/               artwork cut from the Figma export
 CLAUDE.md                rules Claude Code follows in this project
 ```
