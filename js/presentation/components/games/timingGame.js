@@ -2,12 +2,14 @@
 // The browser times the presses; the server checks the totals (5 tries, hits 0-5) and pays.
 import * as ch from '../../../business/challengeService.js';
 import * as auth from '../../../business/authService.js';
-import { shooter } from '../courtArt.js';
+import { shooter, handPos, ballAt } from '../courtArt.js';
 import { esc, toast } from '../ui.js';
 import { howToBox, statusBar, showStatus, hideStatus } from './common.js';
 import { playCorrect, playWrong, playCelebrate } from '../sound.js';
 
-const PAUSE_MS = 900;                     // between tries, so the tip can be read
+const PAUSE_MS = 1400;                    // between tries: ball flight + time to read the tip
+const FLIGHT_MS = 950;                    // ball flight after each shot
+const FOLLOW = 0.15;                      // share of the flight the arm keeps rising (follow-through)
 
 export function mount(root, C) {
   const L = C.level;
@@ -78,6 +80,24 @@ export function mount(root, C) {
     $('#shooter').innerHTML = shooter(Math.min(p, 1));
   }
 
+  // Ball leaves the hand at the release lift and flies the path for this grade.
+  function playShot(grade, p) {
+    const r = Math.min(p ?? 1, 1);
+    const from = handPos(r);
+    const draw = (t) => {
+      const arm = r + (1 - r) * Math.min(t / FOLLOW, 1);
+      $('#shooter').innerHTML = shooter(arm, ballAt(grade, from, t));
+    };
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return draw(1);
+    const t0 = performance.now();
+    const step = () => {
+      const t = Math.min((performance.now() - t0) / FLIGHT_MS, 1);
+      draw(t);
+      if (t < 1) frame = requestAnimationFrame(step);
+    };
+    frame = requestAnimationFrame(step);
+  }
+
   function tick() {
     if (!running) return;
     const p = (performance.now() - startedAt) / sweepMs;
@@ -93,8 +113,10 @@ export function mount(root, C) {
   async function startTry() {
     if (running || finished || busy) return;
     try { await ensureAttempt(); } catch (err) { toast(auth.friendlyError(err)); return; }
+    cancelAnimationFrame(frame);
     $('#tip').textContent = '';
     $('#flash').hidden = true;
+    place(0);
     running = true;
     startedAt = performance.now();
     shootBtn.textContent = c.button ?? 'SHOOT!';
@@ -111,6 +133,7 @@ export function mount(root, C) {
     $('#tip').textContent = tips[grade] ?? '';
     $('#tip').className = `tip tip--${grade}`;
     drawMarks();
+    playShot(grade, p);
     if (tries >= s.tries) return finish();
     shootBtn.disabled = true;
     pauseTimer = setTimeout(() => { shootBtn.disabled = false; startTry(); }, PAUSE_MS);
@@ -147,6 +170,7 @@ export function mount(root, C) {
     busy = true;
     try {
       attemptId = (await ch.startTry(L.id, true)).attempt_id;
+      cancelAnimationFrame(frame);
       tries = 0; hits = 0; marks = []; finished = false;
       hideStatus(status);
       $('#again').hidden = true;
