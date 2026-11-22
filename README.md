@@ -23,8 +23,9 @@ Login, sign-up, dashboard, learner profile, and **Learn, quiz + review** (lesson
    9. `supabase/007_basketball_challenges.sql` (Basketball challenges: Positions, Rules, Timing, Choose play; answers kept on the server)
   10. `supabase/008_replay_practice.sql` (replays are practice: finished lessons, passed levels and a retaken Final give no points and no badge changes)
   11. `supabase/009_volleyball_challenges.sql` (Volleyball challenges: zones, in/out and net touch, underhand serve, first touch and serving; rows marked DRAFT need a coach's review)
+  12. `supabase/010_soccer_challenges.sql` (Soccer challenges: player areas and 2-3-1, handball and offside, shot on goal, two defenders and alone with the keeper; rows marked DRAFT need a coach's review)
 
-   Already ran the earlier files? Only run the new ones (e.g. just 11), then `demo_jamie.sql` again.
+   Already ran the earlier files? Only run the new ones (e.g. just 12), then `demo_jamie.sql` again.
    Run each file whole, with nothing highlighted in the SQL Editor.
 5. **Project Settings → API**: copy the **Project URL** and the **anon / publishable** key into `js/data/config.js`.
    Never use the service_role / secret key in the website.
@@ -129,19 +130,29 @@ Volleyball challenges (after 009, Level 1 + Level 2):
 - [ ] Choose play L1: "Bump to the setter" within 5 s; L2: "Serve to the open corner" within 3 s; wrong or late → Try again
 - [ ] Badges: Zone Master, Line Judge, First Bump, Smart Setter (no "TODO" left); basketball challenges look and work as before
 
+Soccer challenges (after 010, Level 1 + Level 2):
+- [ ] Dashboard **Challenges** on Soccer opens the games (not "Coming soon"); each game opens after its lesson (Positions ← Lesson 2, Rules ← 3, Timing ← 4, Choose play ← 5)
+- [ ] Positions L1 "Find each player's area": THEIR GOAL at the top, YOUR GOAL at the bottom; FW → Attack, MF → Middle, DF → Defense, GK → Goal area; 4/4 passes
+- [ ] Positions L2 "Line up a 7 v 7 team (2-3-1)": the two DF and three MF tokens show "DF"/"MF"; any DF fits either Defense spot, any MF any Middle spot; 7/7 passes
+- [ ] Rules L1 handball: wrong players show "Remember: only the goalkeeper can use hands."; white #4 → "Handball! +20 pts"; the keeper is lime green; Key says "Blue: attacking", "White: defending", "Goalkeeper"
+- [ ] Rules L2 offside: wrong players show "Count the opponents between each attacker and the goal."; blue #9 → "Offside! +20 pts"; Remember the rules shows Handball, Foul, Ball out, Offside
+- [ ] Timing: button says KICK!, How to play says "Press KICK! (or Space)"; the ball rolls toward the foot; hit → into the net, too early → over the bar, too late → rolls past; L1 3 of 5 (2.0 s), L2 4 of 5 (1.4 s); the lesson link still says "Timing bar: shooting"
+- [ ] Choose play L1: "Pass to the left wing" within 5 s; L2: "Shoot to the corner" within 3 s; wrong or late → Try again
+- [ ] Badges: Pitch Starter, Ref Ready, Top Corner, Team Player (no "TODO" left); basketball and volleyball challenges look and work as before
+
 ## Folder map
 ```
 index.html  signup.html  dashboard.html  profile.html  lesson.html  final.html  result.html  challenge.html
 css/                     base.css (shared), auth.css, dashboard.css, profile.css, learn.css, challenge.css
 js/presentation/         pages/ (one script per page), components/ (icons, ui helpers, page guard, top bar, sound,
-                         courtArt + volleyArt (drawings), sportArt (picks them per sport),
+                         courtArt + volleyArt + soccerArt (drawings), sportArt (picks them per sport),
                          games/ = the four challenge games)
 js/business/             authService.js, homeService.js, lessonService.js, quizService.js, challengeService.js
 js/data/                 config.js, supabaseClient.js, *Repository.js, sportInfo.js, lessonUi.js, challengeUi.js
 supabase/                schema.sql, seed.sql, 002_home.sql, 003_learn_quiz.sql, 003_content.sql,
                          004_basketball_lessons.sql, 005_volleyball_lessons.sql,
                          006_soccer_lessons.sql, 007_basketball_challenges.sql, 008_replay_practice.sql,
-                         009_volleyball_challenges.sql,
+                         009_volleyball_challenges.sql, 010_soccer_challenges.sql,
                          demo_jamie.sql, test_unlock_final.sql (test only)
 assets/img/               artwork cut from the Figma export
 CLAUDE.md                rules Claude Code follows in this project

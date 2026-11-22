@@ -17,6 +17,8 @@ export function mount(root, C) {
 
   const picks = c.view === 'line';                // IN / OUT buttons under the picture instead of players on it
   const teams = c.players.some((p) => p.team);
+  const teamName = { blue: 'Blue team', white: 'White team', gk: 'Goalkeeper', ...(c.teams ?? {}) };
+  const keeper = c.players.some((p) => p.team === 'gk');
 
   root.innerHTML = `
     <div class="ch-grid">
@@ -28,7 +30,7 @@ export function mount(root, C) {
           ${picks ? '' : '<div id="players"></div>'}
         </div>
         ${picks ? '<div class="pick-row" id="players"></div>' : ''}
-        ${teams ? keyBox([['blue', 'Blue team'], ['white', 'White team'], ...(c.footprints ? [['foot', 'Footprints']] : [])]) : ''}
+        ${teams ? keyBox([['blue', teamName.blue], ['white', teamName.white], ...(keeper ? [['gk', teamName.gk]] : []), ...(c.footprints ? [['foot', 'Footprints']] : [])]) : ''}
         ${statusBar()}
       </section>
       <aside class="ch-side">
@@ -49,8 +51,8 @@ export function mount(root, C) {
     const off = (p) => (done || wrong.includes(p.no) ? 'disabled' : '');
     $('#players').innerHTML = c.players.map((p) => (picks ? `
       <button type="button" class="pick${state(p)}" data-player="${esc(p.no)}" ${off(p)}>${esc(p.label ?? p.no)}</button>` : `
-      <button type="button" class="player player--${p.team === 'blue' ? 'blue' : 'white'}${state(p)}"
-              data-player="${esc(p.no)}" style="${pos(p.x, p.y)}" aria-label="${esc(`${p.team} number ${p.no}`)}"
+      <button type="button" class="player player--${['blue', 'gk'].includes(p.team) ? p.team : 'white'}${state(p)}"
+              data-player="${esc(p.no)}" style="${pos(p.x, p.y)}" aria-label="${esc(`${teamName[p.team] ?? p.team} number ${p.no}`)}"
               ${off(p)}>
         ${esc(p.no)}${p.ball ? '<i class="ball" aria-hidden="true"></i>' : ''}
       </button>`)).join('');

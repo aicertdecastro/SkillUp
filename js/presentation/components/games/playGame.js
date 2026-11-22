@@ -45,7 +45,7 @@ export function mount(root, C) {
           <h2>Smart play tips</h2>
           <ul class="reminders">${(c.tips ?? []).map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
         </section>
-        ${keyBox([['you', 'You (with the ball)'], ['mate', 'Teammate'], ['opp', 'Opponent']])}
+        ${keyBox([['you', 'You (with the ball)'], ['mate', 'Teammate'], ['opp', 'Opponent'], ...(c.pieces.some((p) => p.kind === 'gk') ? [['gk', 'Goalkeeper']] : [])])}
       </aside>
     </div>`;
 

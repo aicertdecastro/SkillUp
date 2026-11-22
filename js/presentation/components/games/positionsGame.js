@@ -44,6 +44,7 @@ export function mount(root, C) {
   const $ = (s) => root.querySelector(s);
   const status = $('#status');
   const tokenName = Object.fromEntries(c.tokens.map((t) => [t.id, t.name]));
+  const tokenLabel = Object.fromEntries(c.tokens.map((t) => [t.id, t.label ?? t.id]));   // DF1 / DF2 both show "DF"
 
   function draw() {
     const used = new Set(Object.values(placed));
@@ -51,13 +52,13 @@ export function mount(root, C) {
       <li><button type="button" class="token${selected === t.id ? ' is-selected' : ''}${used.has(t.id) ? ' is-used' : ''}"
             data-token="${esc(t.id)}" draggable="${!used.has(t.id) && !done}" aria-pressed="${selected === t.id}"
             ${used.has(t.id) || done ? 'disabled' : ''}>
-        <span class="chip-token">${esc(t.id)}</span>${esc(t.name)}</button></li>`).join('');
+        <span class="chip-token">${esc(tokenLabel[t.id])}</span>${esc(t.name)}</button></li>`).join('');
     $('#spots').innerHTML = c.spots.map((s) => {
       const tok = placed[s.id];
       return `
         <button type="button" class="spot${tok ? ' is-filled' : ''}" data-spot="${esc(s.id)}" style="${pos(s.x, s.y)}"
                 aria-label="${esc(tok ? `${tokenName[tok]} placed` : s.label ?? 'Empty spot')}" ${tok || done ? 'disabled' : ''}>
-          <span class="spot-ring">${tok ? esc(tok) : s.label ? '' : '?'}</span>
+          <span class="spot-ring">${tok ? esc(tokenLabel[tok]) : s.label ? '' : '?'}</span>
           ${s.label ? `<span class="spot-label">${esc(s.label)}</span>` : ''}
         </button>`;
     }).join('');

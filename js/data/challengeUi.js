@@ -2,7 +2,7 @@
 // Sport-specific text (spots, players, scenarios, tips) lives in challenge_levels.content.
 
 // Sports whose challenges are built. The others show "Coming soon".
-export const CHALLENGES_READY = ['basketball', 'volleyball'];
+export const CHALLENGES_READY = ['basketball', 'volleyball', 'soccer'];
 
 export const GAME_ORDER = ['positions', 'rules', 'timing', 'play'];
 
@@ -47,6 +47,12 @@ export const RULE_REMINDERS = {
     ['Foot fault:', 'stepping on the end line when serving.'],
     ['Double contact:', 'one player touches the ball twice in a row.'],
     ['Line ball:', 'a ball on the line is in.'],
+  ],
+  soccer: [
+    ['Handball:', 'touching the ball on purpose with a hand or arm.'],
+    ['Foul:', 'tripping, pushing or kicking a player.'],
+    ['Ball out:', 'throw in, corner kick or goal kick.'],
+    ['Offside:', 'you need 2 opponents level with you or closer to their goal.'],
   ],
 };
 

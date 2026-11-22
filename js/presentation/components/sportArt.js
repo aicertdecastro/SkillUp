@@ -4,6 +4,7 @@
 //   timing: { figure(lift, ball), handPos(lift), ballAt(grade, from, t) }
 import * as bb from './courtArt.js';
 import * as vb from './volleyArt.js';
+import * as sc from './soccerArt.js';
 
 const ART = {
   basketball: {
@@ -23,6 +24,12 @@ const ART = {
     rules: (c) => (c.view === 'line' ? vb.lineView() : vb.netView(c.players)),
     play: () => vb.playCourt(),
     timing: { figure: vb.server, handPos: vb.handPos, ballAt: vb.ballAt },
+  },
+  soccer: {
+    positions: (c) => sc.bandsPitch(c.bands),
+    rules: () => sc.pitch(),
+    play: () => sc.pitch(),
+    timing: { figure: sc.kicker, handPos: sc.handPos, ballAt: sc.ballAt },
   },
 };
 
