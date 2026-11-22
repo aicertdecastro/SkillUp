@@ -90,7 +90,7 @@ function render() {
           <div class="about-actions">
             ${mid.playHref
               ? `<a class="btn btn--orange" href="${mid.playHref}">PLAY LESSON ${mid.nextLessonNo}</a>`
-              : `<span class="btn btn--green">ALL DONE!</span>`}
+              : `<a class="btn btn--green" href="${mid.reviewHref}">REVIEW LESSONS</a>`}
             <a class="btn btn--blue${mid.challengesReady ? '' : ' soon'}" href="${mid.challengesHref}">Challenges</a>
           </div>
         </div>

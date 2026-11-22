@@ -1,6 +1,6 @@
 // BUSINESS LAYER · Sport Final quiz and its results screen.
 import * as repo from '../data/quizRepository.js';
-import { SPORT_IDS, TIERS, QUIZ_PASS_PCT } from '../data/lessonUi.js';
+import { SPORT_IDS, TIERS, QUIZ_PASS_PCT, PRACTICE_TEXT, PRACTICE_RESULT, PRACTICE_BADGE } from '../data/lessonUi.js';
 import { lessonHref, finalHref } from './lessonService.js';
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E'];
@@ -58,6 +58,8 @@ function shapeQuiz(q) {
   const firstOpen = questions.findIndex((x) => !x.answer);
   return {
     attemptId: q.attempt_id,
+    practiceNote: q.practice ? PRACTICE_TEXT : null,             // Final already finished once: retake pays nothing
+    pointsNote: q.practice ? 'Practice · no points' : '+5 pts each',
     sportId: sport.id,
     sportName: sport.name,
     title: `${sport.name} final quiz`,
@@ -114,21 +116,27 @@ export async function getQuizResult(attemptId) {
   const pts = r.points_awarded;
 
   const lines = [];
-  if (pts > 0) lines.push(`+${pts} pts for your correct answers!`);
-  else lines.push('No new points this time. You already earned them on an earlier try.');
-  if (r.passed) {
-    lines.push(`You earned the ${r.badge_name} badge.`);
-    if (r.best_tier && tierRank(r.best_tier) > tierRank(r.tier)) lines.push(`You still keep your ${TIER_LABEL[r.best_tier]} badge.`);
+  const retryLine = `You need ${QUIZ_PASS_PCT}% to pass. Review the lessons below and try again.`;
+  if (r.practice) {                     // retake of a finished Final: no points, badge unchanged
+    lines.push(PRACTICE_RESULT);
+    lines.push(r.passed ? PRACTICE_BADGE : retryLine);
   } else {
-    lines.push(`You need ${QUIZ_PASS_PCT}% to pass. Review the lessons below and try again.`);
+    lines.push(pts > 0 ? `+${pts} pts for your correct answers!` : 'No new points this time. You already earned them on an earlier try.');
+    if (r.passed) {
+      lines.push(`You earned the ${r.badge_name} badge.`);
+      if (r.best_tier && tierRank(r.best_tier) > tierRank(r.tier)) lines.push(`You still keep your ${TIER_LABEL[r.best_tier]} badge.`);
+    } else {
+      lines.push(retryLine);
+    }
   }
 
   return {
     title: r.passed ? 'Sport final passed!' : 'Almost there!',
     passed: r.passed,
+    practice: !!r.practice,
     chip: `${sport.name} · Sport final`,
     tier: r.tier ?? 'locked',
-    badgeLabel: tierLabel ? `${tierLabel} badge` : 'No badge yet',
+    badgeLabel: tierLabel ? (r.practice ? `Practice score · ${tierLabel}` : `${tierLabel} badge`) : 'No badge yet',
     badgeName: r.badge_name,
     tiers: TIERS.map((t) => ({ ...t, you: t.id === r.tier })),
     hint: nextTierHint(r.tier),

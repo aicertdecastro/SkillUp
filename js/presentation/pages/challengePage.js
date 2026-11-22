@@ -2,7 +2,7 @@
 import * as auth from '../../business/authService.js';
 import * as ch from '../../business/challengeService.js';
 import { uiIcons } from '../components/icons.js';
-import { $, esc, toast } from '../components/ui.js';
+import { $, esc, toast, practiceBanner } from '../components/ui.js';
 import { requireLogin } from '../components/guard.js';
 import { renderTopbar } from '../components/learnTopbar.js';
 import * as positions from '../components/games/positionsGame.js';
@@ -57,6 +57,7 @@ function render() {
   content.innerHTML = `
     <div class="challenge sport--${C.sportId}">
       ${levelTabs()}
+      ${practiceBanner(C.level.practiceNote)}
       <div id="game"></div>
     </div>`;
   GAMES[C.level.type].mount($('#game'), C);

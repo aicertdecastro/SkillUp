@@ -3,7 +3,7 @@ import * as auth from '../../business/authService.js';
 import * as quiz from '../../business/quizService.js';
 import { lessonHref, finalHref } from '../../business/lessonService.js';
 import { sportIcon, uiIcons } from '../components/icons.js';
-import { $, esc, toast, setBusy } from '../components/ui.js';
+import { $, esc, toast, setBusy, practiceBanner } from '../components/ui.js';
 import { requireLogin } from '../components/guard.js';
 import { renderTopbar } from '../components/learnTopbar.js';
 import { isSoundOn, setSoundOn, playCorrect, playWrong } from '../components/sound.js';
@@ -74,8 +74,9 @@ function render() {
         <span class="tag tag--yellow">Sport final</span>
         <h1>${esc(Q.title)}</h1>
         <p class="goal">${esc(Q.sub)}</p>
+        ${practiceBanner(Q.practiceNote)}
 
-        <div class="q-progress"><b>${esc(quiz.progressText(i, Q.total))}</b><span>+5 pts each</span></div>
+        <div class="q-progress"><b>${esc(quiz.progressText(i, Q.total))}</b><span>${esc(Q.pointsNote)}</span></div>
         <div class="segments" aria-hidden="true">
           ${Q.questions.map((x, j) => `<i class="${segmentClass(x, j)}"></i>`).join('')}
         </div>

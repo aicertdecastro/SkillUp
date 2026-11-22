@@ -13,6 +13,11 @@ export function richText(text) {
   return esc(text).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
 }
 
+// "Practice mode" note for replays; text comes from the business layer (null = nothing shown).
+export function practiceBanner(text) {
+  return text ? `<p class="practice-banner" role="note">${esc(text)}</p>` : '';
+}
+
 export function toast(message) {
   let el = $('.toast');
   if (!el) {

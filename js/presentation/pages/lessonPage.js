@@ -2,7 +2,7 @@
 import * as auth from '../../business/authService.js';
 import * as lessons from '../../business/lessonService.js';
 import { icons, cardIcon, uiIcons } from '../components/icons.js';
-import { $, esc, richText, toast, setBusy } from '../components/ui.js';
+import { $, esc, richText, toast, setBusy, practiceBanner } from '../components/ui.js';
 import { requireLogin } from '../components/guard.js';
 import { renderTopbar } from '../components/learnTopbar.js';
 
@@ -119,6 +119,7 @@ function render() {
         <p class="eyebrow">${esc(L.eyebrow)}</p>
         <h1>${esc(L.title)}</h1>
         <p class="goal">Goal: ${esc(L.goal)}</p>
+        ${practiceBanner(L.practiceNote)}
 
         <div class="steps" role="tablist" aria-label="Lesson steps">
           ${L.steps.map((s) => `
@@ -190,7 +191,7 @@ async function finish(button) {
   setBusy(button, true, 'Saving…');
   try {
     const { pointsAwarded } = await lessons.finishLesson(L.lessonId);
-    const done = pointsAwarded ? `+${pointsAwarded} pts! Lesson finished.` : 'Lesson finished.';
+    const done = pointsAwarded ? `+${pointsAwarded} pts! Lesson finished.` : L.completed ? 'Lesson reviewed.' : 'Lesson finished.';
     if (L.footer.href) {                 // next lesson, Sport Final, or a built challenge
       toast(done);
       setTimeout(() => { location.href = L.footer.href; }, 900);   // let the toast be seen

@@ -1,7 +1,7 @@
 // BUSINESS LAYER · turns get_lesson() data into what the lesson page shows.
 import * as repo from '../data/lessonRepository.js';
 import { LESSON_MINUTES } from '../data/sportInfo.js';
-import { SPORT_IDS, STEPS, WAYS_TO_EARN, ACTIVITY_LABEL, ACTIVITY_LABEL_BY_SPORT, COACH_TIPS } from '../data/lessonUi.js';
+import { SPORT_IDS, STEPS, WAYS_TO_EARN, ACTIVITY_LABEL, ACTIVITY_LABEL_BY_SPORT, COACH_TIPS, PRACTICE_TEXT } from '../data/lessonUi.js';
 import { challengeHref, isChallengeReady } from './challengeService.js';
 
 const STATUS_LABEL = { complete: 'Done', up_next: 'Up next', in_progress: 'In progress', not_started: 'Not started' };
@@ -72,6 +72,7 @@ function shape(d) {
     eyebrow: `${sport.name} · Lesson ${lesson.lesson_no} of ${d.lessons_total}`,
     href: lessonHref(sport.id, lesson.lesson_no),
     completed: d.progress.completed,
+    practiceNote: d.progress.completed ? PRACTICE_TEXT : null,   // replay: no new points
     back: lesson.lesson_no > 1 ? lessonHref(sport.id, lesson.lesson_no - 1) : 'dashboard.html',
     footer: footer(d),
     steps: STEPS.map((s, i) => ({ ...s, n: i + 1, current: s.id === 'learn' })),

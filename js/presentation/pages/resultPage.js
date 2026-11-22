@@ -42,7 +42,7 @@ function render() {
 
     <div class="result-grid">
       <section class="result-card badge-card">
-        <small class="caps">${R.passed ? 'Badge earned' : 'Badge'}</small>
+        <small class="caps">${R.practice ? 'Practice score' : R.passed ? 'Badge earned' : 'Badge'}</small>
         <span class="badge-shield">${icons.shield(R.tier)}</span>
         <h2>${esc(R.badgeLabel)}</h2>
         <p class="badge-name">${esc(R.badgeName)}</p>

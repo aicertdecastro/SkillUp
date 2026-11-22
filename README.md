@@ -21,8 +21,9 @@ Login, sign-up, dashboard, learner profile, and **Learn, quiz + review** (lesson
    7. `supabase/005_volleyball_lessons.sql` (exact Volleyball lesson 1–5 cards from the Figma screens)
    8. `supabase/006_soccer_lessons.sql` (exact Soccer lesson 1–5 cards, "Timing bar: shooting", Soccer final Q9–Q10)
    9. `supabase/007_basketball_challenges.sql` (Basketball challenges: Positions, Rules, Timing, Choose play; answers kept on the server)
+  10. `supabase/008_replay_practice.sql` (replays are practice: finished lessons, passed levels and a retaken Final give no points and no badge changes)
 
-   Already ran the earlier files? Only run the new ones (e.g. just 9), then `demo_jamie.sql` again.
+   Already ran the earlier files? Only run the new ones (e.g. just 10), then `demo_jamie.sql` again.
    Run each file whole, with nothing highlighted in the SQL Editor.
 5. **Project Settings → API**: copy the **Project URL** and the **anon / publishable** key into `js/data/config.js`.
    Never use the service_role / secret key in the website.
@@ -103,11 +104,19 @@ Basketball challenges (Level 1 + Level 2):
 - [ ] Rules: Level 1 traveling = #10, Level 2 foul = #6; a wrong pick shows the hint and adds to "Tries so far"
 - [ ] Timing: START, then SHOOT! (or Space) in the green zone; 5 tries, Level 1 needs 3 hits (2.0 s, 25 %), Level 2 needs 4 (1.4 s, 15 %); coach tip after each try
 - [ ] Choose play: START → 5 s (Level 2: 3 s) countdown; right answer "Great choice! +20 pts" with the reason; wrong or too late → Try again
-- [ ] "Level N passed! +20 pts" only the first time; replays give no points but can upgrade the badge
+- [ ] "Level N passed! +20 pts" only the first time; a replay of a passed level gives no points and no badge change (008)
 - [ ] See results → `result.html?level=…`: score, misses/tries/hits/time, badge tier, Try again, Next (Level 2 → next game → Sport Final)
 - [ ] Refresh in the middle of Positions or Rules → carries on where you were
 - [ ] Jamie: Positions and Rules show both levels passed (from the demo); Timing and Choose play locked until Lessons 4 and 5 are done
 - [ ] Security: in Table Editor `challenge_keys` has RLS on and no policies; the old `submit_challenge` can't be called from the site
+
+Replays (after 008):
+- [ ] Sport with 5/5 lessons: dashboard shows **REVIEW LESSONS** (not "ALL DONE!") and it opens Lesson 1
+- [ ] A finished lesson shows the yellow "Practice mode" banner; finishing it again says "Lesson reviewed." and points don't change
+- [ ] A passed challenge level shows the banner; passing it again with a better score: no points, badge and best score unchanged, result says "Practice run"
+- [ ] Retaking a finished Sport Final: banner + "Practice · no points"; no +5 per answer; result card says "Practice score", badge unchanged
+- [ ] First-time progress still pays: a level not passed yet, or a sport's first Final, gives points and a badge
+- [ ] A replay day still counts on the profile week strip (streak)
 
 ## Folder map
 ```
@@ -119,7 +128,7 @@ js/business/             authService.js, homeService.js, lessonService.js, quizS
 js/data/                 config.js, supabaseClient.js, *Repository.js, sportInfo.js, lessonUi.js, challengeUi.js
 supabase/                schema.sql, seed.sql, 002_home.sql, 003_learn_quiz.sql, 003_content.sql,
                          004_basketball_lessons.sql, 005_volleyball_lessons.sql,
-                         006_soccer_lessons.sql, 007_basketball_challenges.sql,
+                         006_soccer_lessons.sql, 007_basketball_challenges.sql, 008_replay_practice.sql,
                          demo_jamie.sql, test_unlock_final.sql (test only)
 assets/img/               artwork cut from the Figma export
 CLAUDE.md                rules Claude Code follows in this project

@@ -62,6 +62,7 @@ export async function getDashboard() {
            : next ? `LVL ${next.lesson_no}` : 'DONE!',
         nextLessonNo: next?.lesson_no ?? null,
         playHref: next ? lessonHref(s.id, next.lesson_no) : null,
+        reviewHref: lessonHref(s.id, 1),                // every lesson done: go back and review (no new rewards)
         challengesHref: challengeHref(s.id),
         challengesReady: isChallengeReady(s.id),
         info: SPORT_INFO[s.id],

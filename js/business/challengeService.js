@@ -1,7 +1,7 @@
 // BUSINESS LAYER · challenge games (Positions, Rules, Timing, Choose play) and their results.
 // The server decides right/wrong, points and badges; this file only shapes words and links.
 import * as repo from '../data/challengeRepository.js';
-import { SPORT_IDS, TIERS } from '../data/lessonUi.js';
+import { SPORT_IDS, TIERS, PRACTICE_TEXT, PRACTICE_RESULT, PRACTICE_BADGE } from '../data/lessonUi.js';
 import { CHALLENGES_READY, GAME_ORDER, GAME_NAME, LEVEL_NAME, HOW_TO_PLAY, RULE_REMINDERS, RESULT_STAT } from '../data/challengeUi.js';
 import { lessonHref, finalHref } from './lessonService.js';
 import { nextTierHint } from './quizService.js';
@@ -90,6 +90,7 @@ function shape(d) {
       content: c.content,
       points: c.points,
       passed: c.passed,
+      practiceNote: c.passed ? PRACTICE_TEXT : null,               // level already passed: replay pays nothing
       locked: !!c.lock,
       lockText: lockText(c.lock, c.lesson_no, c.lesson_title),
       lessonHref: lessonHref(sport.id, c.lesson_no),
@@ -183,19 +184,23 @@ export async function getChallengeResult(attemptId) {
   const tierLabel = r.tier ? TIER_LABEL[r.tier] : null;
 
   const lines = [];
-  if (!r.passed) lines.push(failLine(r));
+  if (r.practice) {
+    lines.push(r.passed ? PRACTICE_RESULT : failLine(r));
+    if (r.passed) lines.push(PRACTICE_BADGE);
+  } else if (!r.passed) lines.push(failLine(r));
   else if (pts > 0) lines.push(`+${pts} pts for passing this level!`);
   else lines.push('No new points this time. You already earned them on an earlier try.');
-  if (r.passed && r.tier) lines.push(`You earned the ${r.badge_name} badge.`);
-  if (r.passed && !r.tier) lines.push(`Score ${TIERS[0].min}% or more to earn the ${r.badge_name} badge.`);
-  if (r.best_tier && tierRank(r.best_tier) > tierRank(r.tier)) lines.push(`You still keep your ${TIER_LABEL[r.best_tier]} badge.`);
+  if (!r.practice && r.passed && r.tier) lines.push(`You earned the ${r.badge_name} badge.`);
+  if (!r.practice && r.passed && !r.tier) lines.push(`Score ${TIERS[0].min}% or more to earn the ${r.badge_name} badge.`);
+  if (!r.practice && r.best_tier && tierRank(r.best_tier) > tierRank(r.tier)) lines.push(`You still keep your ${TIER_LABEL[r.best_tier]} badge.`);
 
   return {
     title: r.passed ? `Level ${r.level} passed!` : 'Almost there!',
     passed: r.passed,
+    practice: !!r.practice,
     chip: `${sport.name} · ${GAME_NAME[r.type]} · Level ${r.level}`,
     tier: r.tier ?? 'locked',
-    badgeLabel: tierLabel ? `${tierLabel} badge` : 'No badge yet',
+    badgeLabel: tierLabel ? (r.practice ? `Practice score · ${tierLabel}` : `${tierLabel} badge`) : 'No badge yet',
     badgeName: r.badge_name,
     tiers: TIERS.map((t) => ({ ...t, you: t.id === r.tier })),
     hint: nextTierHint(r.tier),

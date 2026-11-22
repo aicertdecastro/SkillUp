@@ -40,6 +40,11 @@ export const COACH_TIPS = {
 
 export const QUIZ_PASS_PCT = 70;
 
+// Shown on a finished lesson, a passed challenge level or a retaken Sport Final (008_replay_practice.sql).
+export const PRACTICE_TEXT = 'Practice mode · you already earned the rewards here.';
+export const PRACTICE_RESULT = 'Practice run · no points or badges this time.';
+export const PRACTICE_BADGE = 'Your badge stays as it was.';
+
 // Badge tiers (same cut-offs as tier_for() in supabase/schema.sql).
 export const TIERS = [
   { id: 'bronze', label: 'Bronze', min: 70, range: '70–84%' },
