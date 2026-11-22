@@ -2,7 +2,7 @@
 // Sport-specific text (spots, players, scenarios, tips) lives in challenge_levels.content.
 
 // Sports whose challenges are built. The others show "Coming soon".
-export const CHALLENGES_READY = ['basketball'];
+export const CHALLENGES_READY = ['basketball', 'volleyball'];
 
 export const GAME_ORDER = ['positions', 'rules', 'timing', 'play'];
 
@@ -15,7 +15,7 @@ export const GAME_NAME = {
 
 export const LEVEL_NAME = { 1: 'Easy', 2: 'Normal' };
 
-// "How to play" boxes. {tries} {need} {seconds} are filled in from the level settings.
+// "How to play" boxes. {tries} {need} {seconds} come from the level settings, {button} from its content.
 export const HOW_TO_PLAY = {
   rules: [
     'Look at the paused picture.',
@@ -24,7 +24,7 @@ export const HOW_TO_PLAY = {
   ],
   timing: [
     'Watch the marker slide across the bar.',
-    'Press SHOOT! (or Space) when it is in the green zone.',
+    'Press {button} (or Space) when it is in the green zone.',
     'You get {tries} tries. Hit {need} to pass.',
   ],
   play: [
@@ -41,6 +41,12 @@ export const RULE_REMINDERS = {
     ['Double dribble:', 'dribbling again after you stop.'],
     ['Personal foul:', 'pushing, holding or hitting.'],
     ['Out of bounds:', 'the ball or player touches the line or outside it.'],
+  ],
+  volleyball: [
+    ['Net touch:', 'touching the net while playing the ball.'],
+    ['Foot fault:', 'stepping on the end line when serving.'],
+    ['Double contact:', 'one player touches the ball twice in a row.'],
+    ['Line ball:', 'a ball on the line is in.'],
   ],
 };
 

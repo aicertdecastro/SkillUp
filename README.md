@@ -22,8 +22,9 @@ Login, sign-up, dashboard, learner profile, and **Learn, quiz + review** (lesson
    8. `supabase/006_soccer_lessons.sql` (exact Soccer lesson 1–5 cards, "Timing bar: shooting", Soccer final Q9–Q10)
    9. `supabase/007_basketball_challenges.sql` (Basketball challenges: Positions, Rules, Timing, Choose play; answers kept on the server)
   10. `supabase/008_replay_practice.sql` (replays are practice: finished lessons, passed levels and a retaken Final give no points and no badge changes)
+  11. `supabase/009_volleyball_challenges.sql` (Volleyball challenges: zones, in/out and net touch, underhand serve, first touch and serving; rows marked DRAFT need a coach's review)
 
-   Already ran the earlier files? Only run the new ones (e.g. just 10), then `demo_jamie.sql` again.
+   Already ran the earlier files? Only run the new ones (e.g. just 11), then `demo_jamie.sql` again.
    Run each file whole, with nothing highlighted in the SQL Editor.
 5. **Project Settings → API**: copy the **Project URL** and the **anon / publishable** key into `js/data/config.js`.
    Never use the service_role / secret key in the website.
@@ -118,17 +119,29 @@ Replays (after 008):
 - [ ] First-time progress still pays: a level not passed yet, or a sport's first Final, gives points and a badge
 - [ ] A replay day still counts on the profile week strip (streak)
 
+Volleyball challenges (after 009, Level 1 + Level 2):
+- [ ] Dashboard **Challenges** on Volleyball opens the games (not "Coming soon"); each game opens after its lesson (Positions ← Lesson 2, Rules ← 3, Timing ← 4, Choose play ← 5)
+- [ ] Positions L1 "Number the court zones": NET at the top; front row 4-3-2, back row 5-6-1; a wrong zone adds a miss; 6/6 → "Level 1 passed! +20 pts"
+- [ ] Positions L2: Server → Zone 1, Setter → Zone 2, Libero → Zone 5 or 6; Zones 3/4 count as misses
+- [ ] Rules L1 "Is this ball in or out?": OUT shows "Look closely. Is any part of the ball on the line?"; IN → "It's in! +20 pts"
+- [ ] Rules L2 "Which player made a fault?": wrong players show "Look at the net."; #7 → "Net touch! +20 pts"; Remember the rules box shows the 4 volleyball rules
+- [ ] Timing: button says SERVE!, How to play says "Press SERVE! (or Space)"; hit → ball over the net, too early → into the net, too late → lands out past the end line; L1 3 of 5 (2.0 s), L2 4 of 5 (1.4 s)
+- [ ] Choose play L1: "Bump to the setter" within 5 s; L2: "Serve to the open corner" within 3 s; wrong or late → Try again
+- [ ] Badges: Zone Master, Line Judge, First Bump, Smart Setter (no "TODO" left); basketball challenges look and work as before
+
 ## Folder map
 ```
 index.html  signup.html  dashboard.html  profile.html  lesson.html  final.html  result.html  challenge.html
 css/                     base.css (shared), auth.css, dashboard.css, profile.css, learn.css, challenge.css
 js/presentation/         pages/ (one script per page), components/ (icons, ui helpers, page guard, top bar, sound,
-                         courtArt, games/ = the four challenge games)
+                         courtArt + volleyArt (drawings), sportArt (picks them per sport),
+                         games/ = the four challenge games)
 js/business/             authService.js, homeService.js, lessonService.js, quizService.js, challengeService.js
 js/data/                 config.js, supabaseClient.js, *Repository.js, sportInfo.js, lessonUi.js, challengeUi.js
 supabase/                schema.sql, seed.sql, 002_home.sql, 003_learn_quiz.sql, 003_content.sql,
                          004_basketball_lessons.sql, 005_volleyball_lessons.sql,
                          006_soccer_lessons.sql, 007_basketball_challenges.sql, 008_replay_practice.sql,
+                         009_volleyball_challenges.sql,
                          demo_jamie.sql, test_unlock_final.sql (test only)
 assets/img/               artwork cut from the Figma export
 CLAUDE.md                rules Claude Code follows in this project

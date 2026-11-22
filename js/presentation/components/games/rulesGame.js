@@ -1,7 +1,7 @@
 // PRESENTATION LAYER · Rules game: click the player who broke the rule in a paused picture.
 import * as ch from '../../../business/challengeService.js';
 import * as auth from '../../../business/authService.js';
-import { sideCourt, footprints, touchLine } from '../courtArt.js';
+import { artFor } from '../sportArt.js';
 import { esc, toast } from '../ui.js';
 import { howToBox, statusBar, showStatus, keyBox, pos } from './common.js';
 import { playWrong, playCelebrate } from '../sound.js';
@@ -15,8 +15,8 @@ export function mount(root, C) {
   let done = null;
   let busy = false;
 
-  const byNo = Object.fromEntries(c.players.map((p) => [p.no, p]));
-  const toucher = c.players.find((p) => p.touch && byNo[p.touch]);
+  const picks = c.view === 'line';                // IN / OUT buttons under the picture instead of players on it
+  const teams = c.players.some((p) => p.team);
 
   root.innerHTML = `
     <div class="ch-grid">
@@ -24,12 +24,11 @@ export function mount(root, C) {
         <h1>${esc(L.heading)}</h1>
         <p class="ch-sub">${esc(L.sub)}</p>
         <div class="court court--side">
-          ${sideCourt()}
-          ${c.footprints ? footprints(c.footprints) : ''}
-          ${toucher ? touchLine(toucher, byNo[toucher.touch]) : ''}
-          <div id="players"></div>
+          ${artFor(C.sportId).rules(c)}
+          ${picks ? '' : '<div id="players"></div>'}
         </div>
-        ${keyBox([['blue', 'Blue team'], ['white', 'White team'], ...(c.footprints ? [['foot', 'Footprints']] : [])])}
+        ${picks ? '<div class="pick-row" id="players"></div>' : ''}
+        ${teams ? keyBox([['blue', 'Blue team'], ['white', 'White team'], ...(c.footprints ? [['foot', 'Footprints']] : [])]) : ''}
         ${statusBar()}
       </section>
       <aside class="ch-side">
@@ -46,12 +45,15 @@ export function mount(root, C) {
   const status = $('#status');
 
   function draw() {
-    $('#players').innerHTML = c.players.map((p) => `
-      <button type="button" class="player player--${p.team === 'blue' ? 'blue' : 'white'}${wrong.includes(p.no) ? ' is-wrong' : ''}${done && done.pick === p.no ? ' is-right' : ''}"
+    const state = (p) => `${wrong.includes(p.no) ? ' is-wrong' : ''}${done && done.pick === p.no ? ' is-right' : ''}`;
+    const off = (p) => (done || wrong.includes(p.no) ? 'disabled' : '');
+    $('#players').innerHTML = c.players.map((p) => (picks ? `
+      <button type="button" class="pick${state(p)}" data-player="${esc(p.no)}" ${off(p)}>${esc(p.label ?? p.no)}</button>` : `
+      <button type="button" class="player player--${p.team === 'blue' ? 'blue' : 'white'}${state(p)}"
               data-player="${esc(p.no)}" style="${pos(p.x, p.y)}" aria-label="${esc(`${p.team} number ${p.no}`)}"
-              ${done || wrong.includes(p.no) ? 'disabled' : ''}>
+              ${off(p)}>
         ${esc(p.no)}${p.ball ? '<i class="ball" aria-hidden="true"></i>' : ''}
-      </button>`).join('');
+      </button>`)).join('');
     $('#tries').textContent = tries;
   }
 

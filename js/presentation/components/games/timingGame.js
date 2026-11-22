@@ -2,7 +2,7 @@
 // The browser times the presses; the server checks the totals (5 tries, hits 0-5) and pays.
 import * as ch from '../../../business/challengeService.js';
 import * as auth from '../../../business/authService.js';
-import { shooter, handPos, ballAt } from '../courtArt.js';
+import { artFor } from '../sportArt.js';
 import { esc, toast } from '../ui.js';
 import { howToBox, statusBar, showStatus, hideStatus } from './common.js';
 import { playCorrect, playWrong, playCelebrate } from '../sound.js';
@@ -18,6 +18,7 @@ export function mount(root, C) {
   const zone = ch.timingZone(s);
   const sweepMs = Number(s.sweep_s) * 1000;
   const tips = c.tips ?? {};
+  const art = artFor(C.sportId).timing;   // the player figure and the ball's flight for this sport
 
   let attemptId = L.attempt?.id ?? null;
   let tries = 0;
@@ -36,7 +37,7 @@ export function mount(root, C) {
         <h1>${esc(L.heading)}</h1>
         <p class="ch-sub">${esc(L.sub)}</p>
         <div class="timing-stage">
-          <div class="shooter" id="shooter">${shooter(0)}</div>
+          <div class="timing-figure" id="shooter">${art.figure(0)}</div>
           <span class="hit-flash" id="flash" hidden>HIT!</span>
         </div>
         <div class="tbar" aria-hidden="true">
@@ -77,16 +78,16 @@ export function mount(root, C) {
 
   function place(p) {
     $('#marker').style.left = `${Math.min(p, 1) * 100}%`;
-    $('#shooter').innerHTML = shooter(Math.min(p, 1));
+    $('#shooter').innerHTML = art.figure(Math.min(p, 1));
   }
 
   // Ball leaves the hand at the release lift and flies the path for this grade.
   function playShot(grade, p) {
     const r = Math.min(p ?? 1, 1);
-    const from = handPos(r);
+    const from = art.handPos(r);
     const draw = (t) => {
       const arm = r + (1 - r) * Math.min(t / FOLLOW, 1);
-      $('#shooter').innerHTML = shooter(arm, ballAt(grade, from, t));
+      $('#shooter').innerHTML = art.figure(arm, art.ballAt(grade, from, t));
     };
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return draw(1);
     const t0 = performance.now();

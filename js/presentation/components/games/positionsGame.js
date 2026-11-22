@@ -2,7 +2,7 @@
 // Drag a token onto a spot, or tap a token and then tap a spot. The server checks each drop.
 import * as ch from '../../../business/challengeService.js';
 import * as auth from '../../../business/authService.js';
-import { halfCourt } from '../courtArt.js';
+import { artFor } from '../sportArt.js';
 import { esc, toast } from '../ui.js';
 import { statusBar, showStatus, hideStatus, pos } from './common.js';
 import { playCorrect, playWrong, playCelebrate } from '../sound.js';
@@ -34,7 +34,7 @@ export function mount(root, C) {
       </aside>
       <section class="ch-main">
         <div class="court court--half${c.flipped ? ' is-flipped' : ''}">
-          ${halfCourt({ flipped: c.flipped })}
+          ${artFor(C.sportId).positions(c)}
           <div id="spots"></div>
         </div>
         ${statusBar()}
@@ -86,7 +86,7 @@ export function mount(root, C) {
       if (r.finished) {
         done = r;
         playCelebrate();
-        showStatus(status, { tone: 'pass', title: ch.passText(L.no, r.points_awarded), text: 'Every player is in the right place.', resultHref: r.resultHref });
+        showStatus(status, { tone: 'pass', title: ch.passText(L.no, r.points_awarded), text: c.done ?? 'Every player is in the right place.', resultHref: r.resultHref });
       } else if (r.correct) {
         playCorrect();
         hideStatus(status);
@@ -123,13 +123,13 @@ export function mount(root, C) {
     if (t) { selected = selected === t.dataset.token ? null : t.dataset.token; draw(); return; }
     const s = e.target.closest('[data-spot]');
     if (s) {
-      if (!selected) { toast('Tap a player token first.'); return; }
+      if (!selected) { toast('Tap a token first.'); return; }
       drop(selected, s.dataset.spot);
       return;
     }
     if (e.target.closest('#reset')) return reset();
     const res = e.target.closest('#results');
-    if (res && !done) { e.preventDefault(); toast('Place all 5 players first.'); }
+    if (res && !done) { e.preventDefault(); toast(`Place all ${c.tokens.length} tokens first.`); }
   });
 
   // drag and drop (mouse); tap-tap works everywhere, including phones

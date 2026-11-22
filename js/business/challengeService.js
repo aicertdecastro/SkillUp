@@ -33,7 +33,7 @@ export function readResultParam(search) {
   return Number.isInteger(id) && id > 0 ? id : null;
 }
 
-const fill = (text, s) => text.replace(/\{(\w+)\}/g, (_, k) => ({ tries: s.tries, need: s.hits_to_pass, seconds: s.seconds })[k] ?? '');
+const fill = (text, s) => text.replace(/\{(\w+)\}/g, (_, k) => ({ tries: s.tries, need: s.hits_to_pass, seconds: s.seconds, button: s.button })[k] ?? '');
 
 // "Finish Lesson 2 first" → friendlier text for the locked screen / toast.
 function lockText(lock, lessonNo, lessonTitle) {
@@ -97,7 +97,7 @@ function shape(d) {
       lessonLabel: `Lesson ${c.lesson_no}: ${c.lesson_title}`,
       attempt: c.attempt ? { id: c.attempt.id, state: c.attempt.state ?? {} } : null,
     },
-    howTo: (HOW_TO_PLAY[c.type] ?? []).map((t) => fill(t, s)),
+    howTo: (HOW_TO_PLAY[c.type] ?? []).map((t) => fill(t, { ...s, button: c.content.button ?? 'SHOOT!' })),
     reminders: RULE_REMINDERS[sport.id] ?? [],
     timingFacts: c.type === 'timing' ? [
       ['Marker speed', `${Number(s.sweep_s).toFixed(1)} s`],

@@ -2,7 +2,7 @@
 // The server starts its clock on START and checks both the answer and the time.
 import * as ch from '../../../business/challengeService.js';
 import * as auth from '../../../business/authService.js';
-import { sideCourt } from '../courtArt.js';
+import { artFor } from '../sportArt.js';
 import { esc, toast } from '../ui.js';
 import { howToBox, statusBar, showStatus, hideStatus, keyBox, pos } from './common.js';
 import { playCorrect, playWrong, playCelebrate } from '../sound.js';
@@ -27,10 +27,10 @@ export function mount(root, C) {
         </div>
         <p class="ch-sub">${esc(c.scenario)}</p>
         <div class="court court--side">
-          ${sideCourt()}
+          ${artFor(C.sportId).play(c)}
           <div>${c.pieces.map((p) => `
             <span class="piece piece--${esc(p.kind)}" style="${pos(p.x, p.y)}">${esc(p.label)}${p.kind === 'you' ? '<i class="ball" aria-hidden="true"></i>' : ''}
-              ${p.open ? '<em class="open-tag">OPEN</em>' : ''}</span>`).join('')}
+              ${p.tag || p.open ? `<em class="open-tag">${esc(p.tag ?? 'OPEN')}</em>` : ''}</span>`).join('')}
           </div>
         </div>
         <div class="options" id="options">

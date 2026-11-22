@@ -99,6 +99,7 @@
 .piece--you  { background: var(--yellow); }
 .piece--mate { background: var(--blue); color: var(--white); }
 .piece--opp  { background: var(--red); color: var(--white); }
+.piece--empty { background: rgba(255,255,255,.35); border-style: dashed; box-shadow: none; font: 900 11px var(--font-body); }
 .open-tag { position: absolute; top: -22px; left: 50%; transform: translateX(-50%); font: 900 10px var(--font-body); font-style: normal; padding: 1px 6px; background: var(--green); border: 2px solid var(--navy); border-radius: 6px; color: var(--navy); }
 
 .ch-key { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; font-size: 13px; }
@@ -109,6 +110,21 @@
 .dot--foot { background: var(--navy); border-radius: 50% 50% 45% 45%; width: 10px; }
 .dot--you { background: var(--yellow); }
 .dot--opp { background: var(--red); }
+
+/* IN / OUT buttons under a picture (Rules: is the ball in or out?) */
+.pick-row { display: flex; justify-content: center; gap: 14px; }
+.pick {
+  min-width: 130px; height: 54px; padding: 0 18px; font: 400 24px var(--font-head); color: var(--navy); cursor: pointer;
+  background: var(--white); border: 3px solid var(--navy); border-radius: 14px; box-shadow: 0 4px 0 var(--navy);
+}
+.pick:not([disabled]):hover { background: var(--accent-soft, var(--peach)); }
+.pick[disabled] { cursor: default; }
+.pick.is-wrong { opacity: .45; box-shadow: none; }
+.pick.is-right { background: var(--green-soft); border-color: var(--green-shadow); outline: 4px solid var(--green); outline-offset: 2px; }
+
+/* volleyball pictures: warmer court colour, white ball */
+.sport--volleyball .court, .sport--volleyball .timing-stage { --court: #f2a93b; }
+.sport--volleyball .ball { background: var(--white); }
 
 /* ================= status bar ================= */
 .ch-status {
@@ -125,7 +141,7 @@
 
 /* ================= timing bar ================= */
 .timing-stage { position: relative; border: 3px solid var(--navy); border-radius: 16px; background: var(--sky); overflow: hidden; }
-.shooter svg { display: block; width: 100%; max-height: 260px; }
+.timing-figure svg { display: block; width: 100%; max-height: 260px; }
 .hit-flash { position: absolute; right: 16%; top: 10%; font: 400 34px var(--font-head); color: var(--yellow); -webkit-text-stroke: 2px var(--navy); paint-order: stroke fill; animation: pop .4s ease-out; }
 .tbar {
   position: relative; height: 34px; border: 3px solid var(--navy); border-radius: 12px; overflow: hidden;
